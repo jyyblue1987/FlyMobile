@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -15,7 +14,9 @@ import android.widget.FrameLayout;
 import common.library.utils.ActionUtils;
 import common.manager.activity.ActivityManager;
 
-public class BaseActivity extends Activity implements BaseView {
+public class BasePage implements BaseView {
+	protected Activity context = null;
+	
 	protected  ProgressDialog progressDialog = null;
 
 	boolean m_bActivityForground = false;
@@ -27,54 +28,53 @@ public class BaseActivity extends Activity implements BaseView {
 		}		
 	};
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public BasePage()
+	{
 		
-		ActivityManager.getInstance().pushActivity(BaseActivity.this);
+	}
+	
+	public void setContext(Activity context) {
+		this.context = context;
+		ActivityManager.getInstance().pushActivity(context);
 		setBackgroundColor(Color.WHITE);
 		initProgress();
 		
 		hideKeyboardTouchOutSideEditBox();
 	}
 	
+	public Activity getContext()
+	{
+		return context;
+	}
 
-	protected void loadComponents()
-	{
-		findViews();
-		layoutControls();
-		initData();
-		initEvents();
-	}
-	
-	protected void findViews()
+	public void findViews()
 	{
 		
 	}
 	
-	protected void layoutControls()
+	public void layoutControls()
 	{
 		
 	}
 	
-	protected void initData()
+	public void initData()
 	{
 		
 	}
 	
-	protected void initEvents()
+	public void initEvents()
 	{
 		
 	}
-	protected void hideKeyboardTouchOutSideEditBox()
+	public void hideKeyboardTouchOutSideEditBox()
 	{
-		FrameLayout rootView = (FrameLayout) findViewById(android.R.id.content);
-		ActionUtils.hideKeyboardOutSideEditBox(rootView, this);
+		FrameLayout rootView = (FrameLayout) context.findViewById(android.R.id.content);
+		ActionUtils.hideKeyboardOutSideEditBox(rootView, context);
 	}
 	
-	protected void setBackgroundColor( int color )
+	public void setBackgroundColor( int color )
 	{
-		View view = getWindow().getDecorView();
+		View view = context.getWindow().getDecorView();
 	    view.setBackgroundColor(color);
 
 	}
@@ -84,22 +84,22 @@ public class BaseActivity extends Activity implements BaseView {
 		mMessageHandle.sendMessage(msg);
 	}
 	
-	protected void sendMessageDelayed(Message msg, long delayMillis ) 
+	public void sendMessageDelayed(Message msg, long delayMillis ) 
 	{
 		mMessageHandle.sendMessageDelayed(msg, delayMillis);
 	}
 		
-	protected void onFinishActivity()
+	public void onFinishActivity()
 	{
 		ActivityManager.getInstance().popActivity();	
 	}
-	@Override 
+	
 	public void onBackPressed( ) {	
 		onFinishActivity();
 	}
 	
 
-	protected void processMessage(Message msg)
+	public void processMessage(Message msg)
 	{		
 		switch( msg.what )
 		{
@@ -109,7 +109,7 @@ public class BaseActivity extends Activity implements BaseView {
 
 	@Override
 	public void initProgress() {
-       progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Please wait...");
         progressDialog.setIndeterminate(true);
@@ -146,34 +146,23 @@ public class BaseActivity extends Activity implements BaseView {
 	public void finishView() {
 		onFinishActivity();		
 	}
-		
-    protected void onServiceConnected() {
-        // for subclasses
-    }
-
-    protected void onServiceDisconnected() {
-        // for subclasses
-    }
-    
+	    
     protected void showLoadingProgress()
     {
     	showProgress("", "Loading");
     }
     
-	protected void onResume( ) {
-		super.onResume();
-		
+	public void onResume( ) {
 		m_bActivityForground = true;
 	}
 	
-	protected void onPause( ) {
+	public void onPause( ) {
 		m_bActivityForground = false;
-		super.onPause();			
 	}
     
     protected void quitProgram()
     {
-		AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
+		AlertDialog.Builder alert_confirm = new AlertDialog.Builder(context);
 		alert_confirm.setMessage("Do you want to quit this program?").setCancelable(false).setPositiveButton("OK",
 		new DialogInterface.OnClickListener() {
 		    @Override
@@ -190,4 +179,5 @@ public class BaseActivity extends Activity implements BaseView {
 		AlertDialog alert = alert_confirm.create();
 		alert.show();
     }
+
 }

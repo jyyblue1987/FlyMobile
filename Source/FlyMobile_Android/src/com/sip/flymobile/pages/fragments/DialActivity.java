@@ -1,20 +1,21 @@
-package com.sip.flymobile.pages;
+package com.sip.flymobile.pages.fragments;
 
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.pages.BasePage;
+import com.sip.flymobile.pages.SplashPage;
 
 import android.app.Activity;
 import android.os.Bundle;
-import common.manager.activity.ActivityManager;
 
-public class SplashActivity extends Activity {
+public class DialActivity extends Activity {
 	BaseView	m_view = null; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_splash);
+		setContentView(R.layout.layout_dial_page);
 		
-		m_view = new SplashPage(new BasePage());
+		m_view = new DialPage(new BasePage());
 		
 		m_view.setContext(this);
 		m_view.findViews();
