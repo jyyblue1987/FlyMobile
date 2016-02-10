@@ -1,7 +1,8 @@
 package com.sip.flymobile.pages;
 
-import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
+import com.sip.flymobile.mvp.BaseView;
 
 import android.util.TypedValue;
 import android.view.View;
@@ -27,10 +28,10 @@ public class HeaderPage extends BasePageDecorator {
 	{
 		super.findViews();
 		
-//		m_txtPageTitle = (TextView) context.findViewById(R.id.fragment_header).findViewById(R.id.txt_navigate_bar_title);
-//		m_btnLeft = (Button) context.findViewById(R.id.fragment_header).findViewById(R.id.btn_left_button);
-//		m_btnRight = (Button) context.findViewById(R.id.fragment_header).findViewById(R.id.btn_right_button);		
-//		m_txtNotify = (TextView) context.findViewById(R.id.fragment_header).findViewById(R.id.txt_notify_count);
+		m_txtPageTitle = (TextView) getContext().findViewById(R.id.fragment_header).findViewById(R.id.txt_navigate_bar_title);
+		m_btnLeft = (Button) getContext().findViewById(R.id.fragment_header).findViewById(R.id.btn_left_button);
+		m_btnRight = (Button) getContext().findViewById(R.id.fragment_header).findViewById(R.id.btn_right_button);		
+		m_txtNotify = (TextView) getContext().findViewById(R.id.fragment_header).findViewById(R.id.txt_notify_count);
 	}
 	public void layoutControls()
 	{
@@ -42,7 +43,7 @@ public class HeaderPage extends BasePageDecorator {
 		ResourceUtils.addClickEffect(m_btnRight);
 		
 		LayoutUtils.setSize(m_txtNotify, 53, 53, true);
-		m_txtNotify.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(40));
+		m_txtNotify.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(44));
 		LayoutUtils.setMargin(m_txtNotify, 90, 60, 0, 0, true);
 
 		m_txtPageTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(54));
