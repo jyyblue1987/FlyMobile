@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/tab_bg_selector"
     android:orientation="horizontal"
     android:gravity="center_horizontal" >
     <ImageView
@@ -19,6 +19,7 @@
         android:orientation="vertical"
         >
         <ImageView
+            android:id="@+id/img_tab_icon"
             android:layout_width="30dip"
             android:layout_height="20dip"
             android:background="@drawable/call_icon" 

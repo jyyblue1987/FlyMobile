@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
@@ -26,6 +27,22 @@ public class MainPage extends BasePageDecorator {
 	
 	TabActivity view; 
 	
+	private int [] tab_image_res = {
+		R.drawable.call_icon, R.drawable.msg_icon, R.drawable.recent_icon, R.drawable.contact_icon, R.drawable.setting_icon	
+	};
+		
+	private String [] tab_label = {
+		"Call", "Messaging", "Recent", "Contact", "Setting"
+	};
+	
+	Class<?> [] destAct = {
+		DialActivity.class,
+		DialActivity.class,
+		DialActivity.class,
+		DialActivity.class,
+		DialActivity.class		
+	};
+	
 	public MainPage(BaseView view)
 	{
 		super(view);		
@@ -38,46 +55,16 @@ public class MainPage extends BasePageDecorator {
 		TabHost tabHost = view.getTabHost(); 
 		
 		// Message tab
-		Intent intentDial = new Intent().setClass(view, DialActivity.class);
-		TabSpec tabSpecDial = tabHost
-			.newTabSpec("Call")
-			.setIndicator(createTabIndicator("Call"))
-			.setContent(intentDial);
-
-		// Message tab
-		Intent intentMessage = new Intent().setClass(view, DialActivity.class);
-		TabSpec tabSpecMessage = tabHost
-			.newTabSpec("Messaging")
-			.setIndicator(createTabIndicator("Messaing"))
-			.setContent(intentMessage);
-		
-		// Recent tab
-		Intent intentRecent = new Intent().setClass(view, DialActivity.class);
-		TabSpec tabSpecRecent = tabHost
-			.newTabSpec("Recent")
-			.setIndicator(createTabIndicator("Recent"))
-			.setContent(intentRecent);
-		
-		// Contact tab
-		Intent intentContact = new Intent().setClass(view, DialActivity.class);
-		TabSpec tabSpecContact = tabHost
-			.newTabSpec("Contact")
-			.setIndicator(createTabIndicator("Contact"))
-			.setContent(intentContact);
-		
-		// Setting tab
-		Intent intentSetting = new Intent().setClass(view, DialActivity.class);
-		TabSpec tabSpecSetting = tabHost
-			.newTabSpec("Setting")
-			.setIndicator(createTabIndicator("Setting"))
-			.setContent(intentSetting);
-
-		// add all tabs 
-		tabHost.addTab(tabSpecDial);
-		tabHost.addTab(tabSpecMessage);
-		tabHost.addTab(tabSpecRecent);
-		tabHost.addTab(tabSpecContact);
-		tabHost.addTab(tabSpecSetting);
+		for(int i = 0; i < tab_label.length; i++ )
+		{
+			Intent intent = new Intent().setClass(view, destAct[i]);
+			TabSpec tabSpecDial = tabHost
+				.newTabSpec(tab_label[i])
+				.setIndicator(createTabIndicator(i))
+				.setContent(intent);
+			
+			tabHost.addTab(tabSpecDial);
+		}
 		
 		//set Windows tab as default (zero based)
 		tabHost.setCurrentTab(0);
@@ -99,14 +86,21 @@ public class MainPage extends BasePageDecorator {
 		super.initData();
 	}
 	
-	private View createTabIndicator(String label) {
+
+	
+	private View createTabIndicator(int num) {
 	    View tabIndicator = view.getLayoutInflater().inflate(R.layout.fragment_tabindicator, null);
+	    
+	    ImageView icon = (ImageView) tabIndicator.findViewById(R.id.img_tab_icon);
+	    LayoutUtils.setSize(icon, 55, 55, true);
+	    LayoutUtils.setMargin(icon, 0, 20, 0, 0, true);
+	    icon.setBackgroundResource(tab_image_res[num]);
+	    
 	    TextView tv = (TextView) tabIndicator.findViewById(R.id.label);
+	    tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(22));
+	    LayoutUtils.setMargin(tv, 0, 10, 0, 15, true);
+	    tv.setText(tab_label[num]);
 	    
-	    tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(46));
-	    LayoutUtils.setPadding(tv, 0, 20, 0, 20, true);
-	    
-	    tv.setText(label);
 	    return tabIndicator;
 	}	 
 }
