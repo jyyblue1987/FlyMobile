@@ -1,5 +1,7 @@
 package com.sip.flymobile;
 
+import org.doubango.ngn.NgnApplication;
+
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -8,7 +10,6 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.umeng.analytics.MobclickAgent;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import common.design.layout.ScreenAdapter;
@@ -16,7 +17,7 @@ import common.library.utils.DataUtils;
 import common.library.utils.MessageUtils;
 import common.network.utils.NetworkUtils;
 
-public class FlyMobileApplication extends Application {
+public class FlyMobileApplication extends NgnApplication {
 	
 	   @Override
 	    public void onCreate() {

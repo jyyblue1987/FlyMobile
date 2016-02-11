@@ -1,16 +1,25 @@
 package com.sip.flymobile.pages.fragments;
 
+import org.doubango.imsdroid.Screens.BaseScreen;
+import org.doubango.ngn.services.INgnSipService;
+
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BaseView;
 import com.sip.flymobile.pages.BasePage;
 import com.sip.flymobile.pages.HeaderPage;
-import com.sip.flymobile.pages.SplashPage;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-public class DialActivity extends Activity {
-	BaseView	m_view = null; 
+public class DialActivity extends BaseScreen {
+	private static String TAG = DialActivity.class.getCanonicalName();
+	BaseView	m_view = null;
+	private final INgnSipService mSipService;
+	
+	public DialActivity() {
+		super(SCREEN_TYPE.HOME_T, TAG);
+		mSipService = getEngine().getSipService();
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
