@@ -12,9 +12,13 @@ public class MainActivity extends TabActivity {
 	ImageView m_imgSplash = null;
 	
 	BaseView	m_view = null; 
+	
+	public MainActivity()
+	{
+		super();
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		ActivityManager.getInstance().popAllActivity();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_main);
 		

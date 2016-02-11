@@ -61,7 +61,7 @@ public class ScreenSplash extends BaseScreen {
 					if(intent.getBooleanExtra("started", false)){
 //						SipController.initSipAccount();
 //						SipController.setAccount("01548768268", "1234546");
-						mScreenService.show(DialActivity.class);
+						mScreenService.show(MainActivity.class);
 						getEngine().getConfigurationService().putBoolean(NgnConfigurationEntry.GENERAL_AUTOSTART, true);
 						finish();
 					}

@@ -1,13 +1,8 @@
 package com.sip.flymobile.pages.fragments;
 
-import org.doubango.imsdroid.Engine;
 import org.doubango.imsdroid.Screens.BaseScreen;
-import org.doubango.ngn.NgnEngine;
 import org.doubango.ngn.events.NgnEventArgs;
 import org.doubango.ngn.events.NgnRegistrationEventArgs;
-import org.doubango.ngn.services.INgnConfigurationService;
-import org.doubango.ngn.services.INgnSipService;
-import org.doubango.ngn.utils.NgnConfigurationEntry;
 
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BaseView;

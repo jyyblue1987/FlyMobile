@@ -38,7 +38,6 @@ import android.app.Activity;
 import android.app.ActivityGroup;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.net.sip.SipManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
