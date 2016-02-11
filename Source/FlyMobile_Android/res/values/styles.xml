@@ -16,5 +16,23 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <!-- Dialog Pop up and down animation -->
+    <style name="dialogWindowAnimFromCenter" parent="android:Animation" mce_bogus="1">
+        <item name="android:windowEnterAnimation">@anim/left_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/right_bottom_out</item>
+    </style>
+    
+    <style name="dialogWindowAnimFromLeft" parent="android:Animation" mce_bogus="1">
+        <item name="android:windowEnterAnimation">@anim/push_left_in</item>
+        <item name="android:windowExitAnimation">@anim/push_left_out</item>
+    </style>
+    
+    <style name="CustomDialog" parent="@android:style/Theme.Translucent.NoTitleBar">
+	    <item name="android:windowIsFloating">true</item>
+	    <item name="android:windowNoTitle">true</item>
+	    <item name="android:padding">0dp</item>
+	    <item name="android:background">#00000000</item>
+  	</style>
 
 </resources>

@@ -76,17 +76,19 @@
 	                />
 	            <TextView
 	                android:id="@+id/txt_charge_credit"
-	                android:layout_width="15dip"
-	                android:layout_height="15dip"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
 	                android:gravity="center"
+	                android:layout_marginLeft="5dip"
 	                android:text="+"
 	                android:textColor="@color/white"
-	                android:background="@color/app_color" 
+	                android:background="@drawable/charge_credit" 
 	                />
 	        </LinearLayout>
 	    </LinearLayout>
 	</LinearLayout>
 	<LinearLayout
+	    android:id="@+id/lay_dial_number"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
@@ -114,8 +116,8 @@
 	            android:textSize="25sp"
 	            android:textColor="@color/app_grey_color"
 	            />
-	        <common.component.ui.MyTextView
-	            android:id="@+id/txt_dial_number"
+	        <EditText
+	            android:id="@+id/edit_dial_number"
 	            android:layout_width="0dip"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1.0"
@@ -134,7 +136,6 @@
 	    <LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dip"
 	        android:orientation="horizontal" 
 	        android:gravity="center_vertical"        
 	        >
