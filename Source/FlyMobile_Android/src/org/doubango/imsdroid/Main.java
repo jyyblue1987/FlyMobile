@@ -32,11 +32,13 @@ import org.doubango.ngn.utils.NgnStringUtils;
 
 import com.sip.flymobile.R;
 import com.sip.flymobile.pages.fragments.DialActivity;
+import com.sip.flymobile.sip.SipController;
 
 import android.app.Activity;
 import android.app.ActivityGroup;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.net.sip.SipManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -84,6 +86,9 @@ public class Main extends ActivityGroup {
         	startActivityForResult(new Intent(this, ScreenSplash.class), Main.RC_SPLASH);
         	return;
         }
+        
+		SipController.initSipAccount();
+		SipController.setAccount("01548768268", "1234546");
         
         Bundle bundle = savedInstanceState;
         if(bundle == null){

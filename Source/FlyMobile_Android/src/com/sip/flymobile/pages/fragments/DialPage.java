@@ -1,5 +1,11 @@
 package com.sip.flymobile.pages.fragments;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.imsdroid.Screens.ScreenAV;
+import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.utils.NgnStringUtils;
+
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
@@ -189,6 +195,14 @@ public class DialPage extends BasePageDecorator {
 				showContactNumbers();
 			}
 		});
+		
+		m_btnDial.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				makeVoiceCall(m_editDialNumber.getText().toString());
+			}
+		});
 	}
 	
 	private void showContactNumbers()
@@ -256,5 +270,14 @@ public class DialPage extends BasePageDecorator {
 		sb.insert(selStart, textToAppend);
 		m_editDialNumber.setText(sb.toString());
 		m_editDialNumber.setSelection(selStart+1);
+	}
+	
+	boolean makeVoiceCall(String phoneNumber){
+		INgnSipService mSipService = Engine.getInstance().getSipService();
+		if(mSipService.isRegistered() && !NgnStringUtils.isNullOrEmpty(phoneNumber)){
+			ScreenAV.makeCall(phoneNumber, NgnMediaType.Audio);
+			m_editDialNumber.setText(NgnStringUtils.emptyValue());
+		}
+		return true;
 	}
 }

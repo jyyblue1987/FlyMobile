@@ -48,6 +48,7 @@ import org.doubango.ngn.utils.NgnTimer;
 import org.doubango.ngn.utils.NgnUriUtils;
 
 import com.sip.flymobile.R;
+import com.sip.flymobile.pages.fragments.DialActivity;
 
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
@@ -1143,7 +1144,7 @@ public class ScreenAV extends BaseScreen{
 					IBaseScreen currentScreen = mScreenService.getCurrentScreen();
 					boolean gotoHome = (currentScreen != null && currentScreen.getId() == getId());
 					if(gotoHome){
-						mScreenService.show(ScreenHome.class);
+						mScreenService.show(DialActivity.class);
 					}
 					mScreenService.destroy(getId());
 				}});

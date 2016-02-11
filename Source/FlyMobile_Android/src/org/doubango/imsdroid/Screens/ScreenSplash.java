@@ -26,6 +26,7 @@ import org.doubango.ngn.utils.NgnConfigurationEntry;
 import com.sip.flymobile.R;
 import com.sip.flymobile.pages.MainActivity;
 import com.sip.flymobile.pages.fragments.DialActivity;
+import com.sip.flymobile.sip.SipController;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -58,6 +59,8 @@ public class ScreenSplash extends BaseScreen {
 				
 				if(NativeService.ACTION_STATE_EVENT.equals(action)){
 					if(intent.getBooleanExtra("started", false)){
+//						SipController.initSipAccount();
+//						SipController.setAccount("01548768268", "1234546");
 						mScreenService.show(DialActivity.class);
 						getEngine().getConfigurationService().putBoolean(NgnConfigurationEntry.GENERAL_AUTOSTART, true);
 						finish();
