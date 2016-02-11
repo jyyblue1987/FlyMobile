@@ -7,6 +7,7 @@
 	<include android:id="@+id/fragment_header"
 		layout="@layout/fragment_header_bar" />	
 	<LinearLayout
+	    android:id="@+id/lay_total_self_info"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_horizontal"
@@ -20,6 +21,7 @@
 	        android:src="@drawable/contact_icon"
 	        />
 	    <LinearLayout
+	        android:id="@+id/lay_self_info"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical" 
@@ -32,11 +34,13 @@
 	            android:text="(015) 510 5155" 
 	            />
 	        <LinearLayout
+	            android:id="@+id/lay_expire"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:orientation="horizontal" 
 	            >
 	            <common.component.ui.MyTextView
+	                android:id="@+id/lbl_expire_date"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:text="expired date     :" 
@@ -51,11 +55,13 @@
 	                />
 	        </LinearLayout>
 	        <LinearLayout
+	            android:id="@+id/lay_credit"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:orientation="horizontal" 
 	            >
 	            <common.component.ui.MyTextView
+	                android:id="@+id/lbl_credit_balance"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:text="credit balance  :" 
@@ -69,6 +75,7 @@
 	                android:text="MYR 50.00" 
 	                />
 	            <TextView
+	                android:id="@+id/txt_charge_credit"
 	                android:layout_width="15dip"
 	                android:layout_height="15dip"
 	                android:gravity="center"
@@ -93,6 +100,7 @@
 	        android:gravity="center_vertical"        
 	        >
 	        <Button
+	            android:id="@+id/btn_add_contact"
 	            android:layout_width="15dip"
 	            android:layout_height="15dip"
 	            android:background="@drawable/plus"
@@ -116,6 +124,7 @@
 	            android:textSize="25sp"
 	            />
 	        <Button
+	            android:id="@+id/btn_del"
 	            android:layout_width="22dip"
 	            android:layout_height="15dip"
 	            android:background="@drawable/del"
@@ -135,6 +144,7 @@
 	            android:layout_weight="1.0"
 	            />
 	        <common.component.ui.MyTextView
+	            android:id="@+id/lbl_display_number"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="displaying as"
@@ -154,11 +164,13 @@
 	            android:layout_weight="1.0"
 	            />
 	        <Button
+	            android:id="@+id/btn_switch"
 	            android:layout_width="15dip"
 	            android:layout_height="15dip"
 	            android:background="@drawable/refresh"
 	            />
 	        <common.component.ui.MyTextView
+	            android:id="@+id/txt_contact_number"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginLeft="10dip"
@@ -204,11 +216,13 @@
             android:gravity="center"            
             >
             <Button                
+                android:id="@+id/btn_dial"
                 android:layout_width="35dip"
                 android:layout_height="35dip" 
                 android:background="@drawable/call"
                 />
             <Button
+                android:id="@+id/btn_noti_callback"
                 android:layout_width="35dip"
                 android:layout_height="35dip" 
                 android:layout_marginLeft="30dip"
