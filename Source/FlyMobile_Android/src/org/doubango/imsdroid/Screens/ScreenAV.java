@@ -48,6 +48,7 @@ import org.doubango.ngn.utils.NgnUriUtils;
 
 import com.sip.flymobile.FlyMobileApplication;
 import com.sip.flymobile.R;
+import com.sip.flymobile.pages.MainActivity;
 import com.sip.flymobile.pages.fragments.DialActivity;
 
 import android.app.AlertDialog;
@@ -68,8 +69,6 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.SurfaceView;
 import android.view.View;
@@ -162,14 +161,14 @@ public class ScreenAV extends BaseScreen{
 		if(NgnStringUtils.isNullOrEmpty(super.mId)){
 			Log.e(TAG, "Invalid audio/video session");
 			finish(); 
-			mScreenService.show(ScreenHome.class);
+			mScreenService.show(MainActivity.class);
 			return;
 		}
 		mAVSession = NgnAVSession.getSession(NgnStringUtils.parseLong(super.mId, -1));
 		if(mAVSession == null){
 			Log.e(TAG, String.format("Cannot find audio/video session with id=%s", super.mId));
 			finish(); 
-			mScreenService.show(ScreenHome.class);
+			mScreenService.show(MainActivity.class);
 			return;
 		}
 		mAVSession.incRef();
@@ -384,7 +383,7 @@ public class ScreenAV extends BaseScreen{
 	
 	@Override
 	public boolean back(){
-		boolean ret =  mScreenService.show(ScreenHome.class);
+		boolean ret =  mScreenService.show(MainActivity.class);
 		if(ret){
 			mScreenService.destroy(getId());
 		}

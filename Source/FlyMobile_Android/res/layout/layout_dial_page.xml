@@ -115,6 +115,7 @@
 	            android:text="+60"
 	            android:textSize="25sp"
 	            android:textColor="@color/app_grey_color"
+	            android:visibility="gone"
 	            />
 	        <EditText
 	            android:id="@+id/edit_dial_number"

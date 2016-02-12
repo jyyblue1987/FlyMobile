@@ -22,7 +22,6 @@ package org.doubango.imsdroid;
 import org.doubango.imsdroid.Screens.IBaseScreen;
 import org.doubango.imsdroid.Screens.IBaseScreen.SCREEN_TYPE;
 import org.doubango.imsdroid.Screens.ScreenAV;
-import org.doubango.imsdroid.Screens.ScreenHome;
 import org.doubango.imsdroid.Screens.ScreenSplash;
 import org.doubango.imsdroid.Services.IScreenService;
 import org.doubango.imsdroid.Services.Impl.ScreenService;
@@ -176,7 +175,7 @@ public class Main extends ActivityGroup {
 						break;
 					default:
 						if(!mScreenService.show(id)){
-							mScreenService.show(ScreenHome.class);
+							mScreenService.show(MainActivity.class);
 						}
 						break;
 				}
@@ -217,12 +216,12 @@ public class Main extends ActivityGroup {
 					}
 					if(avSession != null){
 						if(!mScreenService.show(ScreenAV.class, Long.toString(avSession.getId()))){
-							mScreenService.show(ScreenHome.class);
+							mScreenService.show(MainActivity.class);
 						}
 					}
 					else{
 						Log.e(TAG,"Failed to find associated audio/video session");
-						mScreenService.show(ScreenHome.class);
+						mScreenService.show(MainActivity.class);
 						mEngine.refreshAVCallNotif(R.drawable.phone_call_25);
 					}
 				}

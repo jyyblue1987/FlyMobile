@@ -3,7 +3,9 @@ package com.sip.flymobile.pages.fragments;
 import org.doubango.imsdroid.Engine;
 import org.doubango.imsdroid.Screens.ScreenAV;
 import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.services.INgnConfigurationService;
 import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.utils.NgnConfigurationEntry;
 import org.doubango.ngn.utils.NgnStringUtils;
 
 import com.sip.flymobile.R;
@@ -133,6 +135,8 @@ public class DialPage extends BasePageDecorator {
 	public void initData()
 	{
 		super.initData();
+
+		INgnConfigurationService mConfigurationService = Engine.getInstance().getConfigurationService();
 		
 		m_editDialNumber.setText("");
 		m_nSelContactNum = 0;
@@ -150,6 +154,8 @@ public class DialPage extends BasePageDecorator {
 		DialerUtils.setDialerTextButton(getContext(), R.id.screen_tab_dialer_button_star, "*", "", DialerUtils.TAG_STAR, mOnDialerClick);
 		DialerUtils.setDialerTextButton(getContext(), R.id.screen_tab_dialer_button_sharp, "#", "", DialerUtils.TAG_SHARP, mOnDialerClick);
 
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		m_txtMobile.setText(sipNumber);
 	}
 	
 	public void initEvents()
@@ -196,7 +202,17 @@ public class DialPage extends BasePageDecorator {
 			}
 		});
 		
+		ResourceUtils.addClickEffect(m_btnDial);		
 		m_btnDial.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				makeVoiceCall(m_editDialNumber.getText().toString());
+			}
+		});
+		
+		ResourceUtils.addClickEffect(m_btnNotification);		
+		m_btnNotification.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {

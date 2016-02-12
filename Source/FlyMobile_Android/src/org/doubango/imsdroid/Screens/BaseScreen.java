@@ -24,9 +24,6 @@ import org.doubango.imsdroid.Services.IScreenService;
 import org.doubango.imsdroid.Services.Impl.ScreenService;
 
 import android.app.Activity;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.KeyEvent;
 
 public abstract class BaseScreen extends Activity implements IBaseScreen {

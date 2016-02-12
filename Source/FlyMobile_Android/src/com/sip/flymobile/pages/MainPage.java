@@ -4,6 +4,7 @@ import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
 import com.sip.flymobile.pages.fragments.DialActivity;
+import com.sip.flymobile.pages.fragments.MessageHistoryActivity;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -37,7 +38,7 @@ public class MainPage extends BasePageDecorator {
 	
 	Class<?> [] destAct = {
 		DialActivity.class,
-		DialActivity.class,
+		MessageHistoryActivity.class,
 		DialActivity.class,
 		DialActivity.class,
 		DialActivity.class		

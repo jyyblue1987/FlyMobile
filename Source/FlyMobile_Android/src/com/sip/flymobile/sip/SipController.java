@@ -59,7 +59,7 @@ public class SipController {
 				mConfigurationService.putString(NgnConfigurationEntry.NETWORK_PCSCF_HOST, SIP_SERVER_HOST);
 				mConfigurationService.putInt(NgnConfigurationEntry.NETWORK_PCSCF_PORT, SIP_SERVER_PORT);
 				mConfigurationService.putString(NgnConfigurationEntry.NETWORK_REALM, SIP_DOMAIN);
-				mConfigurationService.putBoolean(NgnConfigurationEntry.NETWORK_USE_3G, true);
+//				mConfigurationService.putBoolean(NgnConfigurationEntry.NETWORK_USE_3G, true);
 
 				// VERY IMPORTANT: Commit changes
 				mConfigurationService.commit();

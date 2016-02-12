@@ -38,6 +38,8 @@
 		android:layout_height="20dip" 
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
+		android:text="Done"
+		android:background="@color/grey"
 		android:textColor="@color/white"		
 		android:visibility="invisible"
 		/>

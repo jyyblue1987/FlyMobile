@@ -28,12 +28,12 @@ import org.doubango.imsdroid.Main;
 import org.doubango.imsdroid.Screens.IBaseScreen;
 import org.doubango.imsdroid.Screens.IBaseScreen.SCREEN_TYPE;
 import org.doubango.imsdroid.Screens.ScreenAV;
-import org.doubango.imsdroid.Screens.ScreenHome;
 import org.doubango.imsdroid.Services.IScreenService;
 import org.doubango.ngn.services.impl.NgnBaseService;
 
 import com.sip.flymobile.FlyMobileApplication;
 import com.sip.flymobile.R;
+import com.sip.flymobile.pages.MainActivity;
 
 import android.app.Activity;
 import android.app.LocalActivityManager;
@@ -81,7 +81,7 @@ public class ScreenService extends NgnBaseService implements IScreenService {
 		if(mLastScreensIndex == 0){
 			if((screen = mLastScreens[mLastScreens.length-1]) == null){
 				// goto home
-				return show(ScreenHome.class);
+				return show(MainActivity.class);
 			}
 			else{
 				return this.show(screen);
@@ -92,7 +92,7 @@ public class ScreenService extends NgnBaseService implements IScreenService {
 		mLastScreens[mLastScreensIndex-1] = null;
 		mLastScreensIndex--;
 		if(screen == null || !show(screen)){
-			return show(ScreenHome.class);
+			return show(MainActivity.class);
 		}
 		
 		return true;

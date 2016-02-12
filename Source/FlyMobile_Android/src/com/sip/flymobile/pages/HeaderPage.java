@@ -37,10 +37,12 @@ public class HeaderPage extends BasePageDecorator {
 	{
 		super.layoutControls();
 		
-		LayoutUtils.setSize(m_btnLeft, 160, 125, true);
-		LayoutUtils.setSize(m_btnRight, 160, 125, true);
+		LayoutUtils.setSize(m_btnLeft, 218, 157, true);
+		LayoutUtils.setSize(m_btnRight, 218, 157, true);
 		ResourceUtils.addClickEffect(m_btnLeft);
 		ResourceUtils.addClickEffect(m_btnRight);
+		m_btnLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(50));
+		m_btnRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(50));
 		
 		LayoutUtils.setSize(m_txtNotify, 53, 53, true);
 		m_txtNotify.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(44));
@@ -87,8 +89,19 @@ public class HeaderPage extends BasePageDecorator {
 		
 	}
 	
-	public void initData()
+	public void setButtonText(int side, String text)
 	{
-		super.initData();
+		if( side == 0 )
+			m_btnLeft.setText(text);
+		if( side == 1 )
+			m_btnRight.setText(text);		
+	}
+	
+	public void setButtonVisible(int side, int visibility)
+	{
+		if( side == 0 )
+			m_btnLeft.setVisibility(visibility);
+		if( side == 1 )
+			m_btnRight.setVisibility(visibility);		
 	}
 }
