@@ -96,15 +96,7 @@ public class ScreenSplash extends BaseScreen {
 		}
 		face_in_out_anim.start(); 		
 		
-		Handler handler = new Handler();
-		handler.postDelayed(new Runnable() {
-			
-			@Override
-			public void run() {
-			}
-		}, 1500);
-	}
-	
+	}	
 	@Override
 	protected void onDestroy() {
 		if(mBroadCastRecv != null){

@@ -4,6 +4,7 @@ import org.doubango.imsdroid.Screens.BaseTabScreen;
 
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.sip.SipController;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -30,6 +31,13 @@ public class MainActivity extends BaseTabScreen {
 		m_view.layoutControls();
 		m_view.initData();
 		m_view.initEvents();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		SipController.register(this);
 	}
 		
 }
