@@ -98,7 +98,7 @@ public class MainPage extends BasePageDecorator {
 	    icon.setBackgroundResource(tab_image_res[num]);
 	    
 	    TextView tv = (TextView) tabIndicator.findViewById(R.id.label);
-	    tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(22));
+	    tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(33));
 	    LayoutUtils.setMargin(tv, 0, 10, 0, 15, true);
 	    tv.setText(tab_label[num]);
 	    

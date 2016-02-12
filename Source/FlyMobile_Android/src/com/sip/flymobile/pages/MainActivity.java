@@ -6,6 +6,8 @@ import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BaseView;
 import com.sip.flymobile.sip.SipController;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.ImageView;
 

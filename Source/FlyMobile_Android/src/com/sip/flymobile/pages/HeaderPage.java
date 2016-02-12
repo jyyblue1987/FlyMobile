@@ -104,4 +104,12 @@ public class HeaderPage extends BasePageDecorator {
 		if( side == 1 )
 			m_btnRight.setVisibility(visibility);		
 	}
+	
+	public void setButtonEvents(int side, View.OnClickListener listener)
+	{
+		if( side == 0 )
+			m_btnLeft.setOnClickListener(listener);
+		if( side == 1 )
+			m_btnRight.setOnClickListener(listener);	
+	}
 }

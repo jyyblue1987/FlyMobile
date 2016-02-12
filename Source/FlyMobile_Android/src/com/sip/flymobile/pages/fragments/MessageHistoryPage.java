@@ -3,20 +3,27 @@ package com.sip.flymobile.pages.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
 import com.sip.flymobile.pages.HeaderPage;
 
+import android.app.AlertDialog;
+import android.app.TabActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
+import common.library.utils.MessageUtils;
+import common.library.utils.MessageUtils.OnButtonClickListener;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.MyListAdapter;
 import common.list.adapter.ViewHolder;
@@ -49,6 +56,17 @@ public class MessageHistoryPage extends BasePageDecorator {
 		}
 	}
 	
+	private void changeNavigateButton()
+	{
+		if( decorator instanceof HeaderPage )
+		{
+			HeaderPage header = (HeaderPage) decorator;
+			if( m_bEditMode == false )
+				header.setButtonText(1, "Edit");
+			else
+				header.setButtonText(1, "Done");
+		}
+	}
 	public void initData()
 	{
 		super.initData();
@@ -56,8 +74,18 @@ public class MessageHistoryPage extends BasePageDecorator {
 		List<JSONObject> list = new ArrayList<JSONObject>();
 		for(int i = 0; i < 20; i++)
 		{
-			list.add(new JSONObject());
+			JSONObject item = new JSONObject();
+			try {
+				item.put(Const.ID, i);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			list.add(item);
 		}
+		
+		m_bEditMode = false;
+		
+		changeNavigateButton();
 		
 		m_adapterMessageList = new MessageListAdapter(getContext(), list, R.layout.fragment_list_message_history_item, null);
 		
@@ -67,13 +95,38 @@ public class MessageHistoryPage extends BasePageDecorator {
 	public void initEvents()
 	{
 		super.initEvents();
-		
+
+		if( decorator instanceof HeaderPage )
+		{
+			HeaderPage header = (HeaderPage) decorator;
+			header.setButtonEvents(1, new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					m_bEditMode = !m_bEditMode;					
+					changeNavigateButton();
+					m_adapterMessageList.notifyDataSetChanged();
+				}
+			});
+		}
 	}
 	
-	private void deleteMessageHistory(JSONObject item)
+	private void deleteMessageHistory(JSONObject data)
 	{
+		List<JSONObject> list = m_adapterMessageList.getData();
 		
+		for(int i = 0; i < list.size(); i++)
+		{
+			JSONObject item = list.get(i);
+			if( item.optInt(Const.ID, -1) == data.optInt(Const.ID, -1) )
+			{
+				list.remove(i);
+				m_adapterMessageList.notifyDataSetChanged();
+				break;
+			}
+		}
 	}
+	
 	
 	class MessageListAdapter extends MyListAdapter {
 		public MessageListAdapter(Context context, List<JSONObject> data,
@@ -108,7 +161,22 @@ public class MessageHistoryPage extends BasePageDecorator {
 				
 				@Override
 				public void onClick(View v) {
-					deleteMessageHistory(item);
+					AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getContext().getParent());
+					alert_confirm.setMessage("Do you want to delete this message history?").setCancelable(false).setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+						    @Override
+						    public void onClick(DialogInterface dialog, int which) {
+						    	deleteMessageHistory(item);
+						    }
+						}).setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+						    @Override
+						    public void onClick(DialogInterface dialog, int which) {		        
+						        return;
+						    }
+					});
+					AlertDialog alert = alert_confirm.create();
+					alert.show();
 				}
 			});
 		}	
