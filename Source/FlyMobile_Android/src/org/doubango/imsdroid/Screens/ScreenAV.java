@@ -369,7 +369,7 @@ public class ScreenAV extends BaseScreen{
 				case SELECT_CONTENT:
 					if (mAVSession != null) {
 						Uri selectedContentUri = data.getData();
-						String selectedContentPath = super.getPath(selectedContentUri);
+//						String selectedContentPath = super.getPath(selectedContentUri);
 //						ScreenFileTransferView.sendFile(mAVSession.getRemotePartyUri(), selectedContentPath);
 					}
 					break;

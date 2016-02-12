@@ -26,9 +26,9 @@ import java.util.Map;
 import org.doubango.imsdroid.Engine;
 import org.doubango.imsdroid.Main;
 import org.doubango.imsdroid.Screens.IBaseScreen;
+import org.doubango.imsdroid.Screens.IBaseScreen.SCREEN_TYPE;
 import org.doubango.imsdroid.Screens.ScreenAV;
 import org.doubango.imsdroid.Screens.ScreenHome;
-import org.doubango.imsdroid.Screens.BaseScreen.SCREEN_TYPE;
 import org.doubango.imsdroid.Services.IScreenService;
 import org.doubango.ngn.services.impl.NgnBaseService;
 

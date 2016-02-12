@@ -19,9 +19,8 @@
 */
 package org.doubango.imsdroid;
 
-import org.doubango.imsdroid.Screens.BaseScreen;
-import org.doubango.imsdroid.Screens.BaseScreen.SCREEN_TYPE;
 import org.doubango.imsdroid.Screens.IBaseScreen;
+import org.doubango.imsdroid.Screens.IBaseScreen.SCREEN_TYPE;
 import org.doubango.imsdroid.Screens.ScreenAV;
 import org.doubango.imsdroid.Screens.ScreenHome;
 import org.doubango.imsdroid.Screens.ScreenSplash;
@@ -33,10 +32,7 @@ import org.doubango.ngn.utils.NgnStringUtils;
 
 import com.sip.flymobile.R;
 import com.sip.flymobile.pages.MainActivity;
-import com.sip.flymobile.pages.fragments.DialActivity;
-import com.sip.flymobile.sip.SipController;
 
-import android.app.Activity;
 import android.app.ActivityGroup;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -44,8 +40,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
 
 public class Main extends ActivityGroup {

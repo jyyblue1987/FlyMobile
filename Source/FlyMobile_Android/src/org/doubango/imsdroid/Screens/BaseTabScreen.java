@@ -23,19 +23,17 @@ import org.doubango.imsdroid.Engine;
 import org.doubango.imsdroid.Services.IScreenService;
 import org.doubango.imsdroid.Services.Impl.ScreenService;
 
-import android.app.Activity;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
+import android.app.TabActivity;
 import android.view.KeyEvent;
 
-public abstract class BaseScreen extends Activity implements IBaseScreen {
+public abstract class BaseTabScreen extends TabActivity implements IBaseScreen {
+	
 	protected String mId;
 	protected final SCREEN_TYPE mType;
 	
 	protected final IScreenService mScreenService;
 
-	protected BaseScreen(SCREEN_TYPE type, String id) {
+	protected BaseTabScreen(SCREEN_TYPE type, String id) {
 		super();
 		mType = type;
 		mId = id;

@@ -19,11 +19,42 @@
 */
 package org.doubango.imsdroid.Screens;
 
-import org.doubango.imsdroid.Screens.BaseScreen.SCREEN_TYPE;
-
-import android.view.Menu;
-
 public interface IBaseScreen {
+	public static enum SCREEN_TYPE {
+		// Well-Known
+		ABOUT_T,
+		AV_QUEUE_T,
+		CHAT_T,
+		CHAT_QUEUE_T,
+		CODECS_T,
+		CONTACTS_T,
+		DIALER_T,
+		FILETRANSFER_QUEUE_T,
+		FILETRANSFER_VIEW_T,
+		HOME_T,
+		IDENTITY_T,
+		INTERCEPT_CALL_T,
+		GENERAL_T,
+		MESSAGING_T,
+		NATT_T,
+		NETWORK_T,
+		PRESENCE_T,
+		QOS_T,
+		SETTINGS_T,
+		SECURITY_T,
+		SPLASH_T,
+		
+		TAB_CONTACTS, 
+		TAB_HISTORY_T, 
+		TAB_INFO_T, 
+		TAB_ONLINE,
+		TAB_MESSAGES_T,
+		
+		
+		// All others
+		AV_T
+	}
+	
 	String getId();
 	SCREEN_TYPE getType();
 	boolean hasBack();
