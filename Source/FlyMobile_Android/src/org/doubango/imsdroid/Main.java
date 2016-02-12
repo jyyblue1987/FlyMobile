@@ -31,6 +31,7 @@ import org.doubango.ngn.utils.NgnPredicate;
 import org.doubango.ngn.utils.NgnStringUtils;
 
 import com.sip.flymobile.R;
+import com.sip.flymobile.pages.MainActivity;
 import com.sip.flymobile.pages.fragments.DialActivity;
 import com.sip.flymobile.sip.SipController;
 
@@ -86,9 +87,6 @@ public class Main extends ActivityGroup {
         	return;
         }
         
-		SipController.initSipAccount();
-		SipController.setAccount("01548768268", "1234546");
-        
         Bundle bundle = savedInstanceState;
         if(bundle == null){
 	        Intent intent = getIntent();
@@ -98,7 +96,7 @@ public class Main extends ActivityGroup {
         	handleAction(bundle);
         }
         else if(mScreenService != null){
-        	mScreenService.show(DialActivity.class);
+        	mScreenService.show(MainActivity.class);
         }
     }
     

@@ -21,31 +21,13 @@ package org.doubango.imsdroid.Screens;
 
 import org.doubango.imsdroid.Engine;
 import org.doubango.imsdroid.Services.IScreenService;
-import org.doubango.ngn.utils.NgnStringUtils;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 
 public abstract class BaseScreen extends Activity implements IBaseScreen {
 	private static final String TAG = BaseScreen.class.getCanonicalName();
