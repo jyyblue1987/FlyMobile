@@ -15,7 +15,7 @@ public class SipController {
 	public final static String SIP_DOMAIN = "14.102.151.153";
 	private final static int SIP_SERVER_PORT = 5060;
 	
-	private final static String SIP_USERNAME = "01548768268";
+	private final static String SIP_USERNAME = "01548768269";
 	private final static String SIP_PASSWORD = "123456";
 	
 	public static void initSipAccount()
@@ -59,6 +59,8 @@ public class SipController {
 				mConfigurationService.putString(NgnConfigurationEntry.NETWORK_PCSCF_HOST, SIP_SERVER_HOST);
 				mConfigurationService.putInt(NgnConfigurationEntry.NETWORK_PCSCF_PORT, SIP_SERVER_PORT);
 				mConfigurationService.putString(NgnConfigurationEntry.NETWORK_REALM, SIP_DOMAIN);
+				mConfigurationService.putBoolean(NgnConfigurationEntry.NETWORK_USE_3G, true);
+
 				// VERY IMPORTANT: Commit changes
 				mConfigurationService.commit();
 				// register (log in)

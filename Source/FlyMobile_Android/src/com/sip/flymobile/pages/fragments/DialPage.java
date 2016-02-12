@@ -203,6 +203,14 @@ public class DialPage extends BasePageDecorator {
 				makeVoiceCall(m_editDialNumber.getText().toString());
 			}
 		});
+		
+		getContext().findViewById(R.id.screen_tab_dialer_button_0).setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				appendText("+");
+				return true;
+			}
+		});
 	}
 	
 	private void showContactNumbers()
