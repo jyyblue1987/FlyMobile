@@ -36,6 +36,7 @@ import org.doubango.ngn.utils.NgnDateTimeUtils;
 import org.doubango.ngn.utils.NgnStringUtils;
 import org.doubango.ngn.utils.NgnUriUtils;
 
+import com.sip.flymobile.FlyMobileApplication;
 import com.sip.flymobile.R;
 
 import android.content.BroadcastReceiver;
@@ -103,11 +104,11 @@ public class NativeService extends NgnNativeService {
 							final boolean bTrying = (type == NgnRegistrationEventTypes.REGISTRATION_INPROGRESS || type == NgnRegistrationEventTypes.UNREGISTRATION_INPROGRESS);
 							if(mEngine.getSipService().isRegistered()){
 								mEngine.showAppNotif(bTrying ?R.drawable.bullet_ball_glass_grey_16 : R.drawable.bullet_ball_glass_green_16, null);
-								IMSDroid.acquirePowerLock();
+								FlyMobileApplication.acquirePowerLock();
 							}
 							else{
 								mEngine.showAppNotif(bTrying ?R.drawable.bullet_ball_glass_grey_16 : R.drawable.bullet_ball_glass_red_16, null);
-								IMSDroid.releasePowerLock();
+								FlyMobileApplication.releasePowerLock();
 							}
 							break;
 					}
