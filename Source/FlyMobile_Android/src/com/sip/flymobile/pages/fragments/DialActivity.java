@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.Menu;
 
 public class DialActivity extends BaseScreen {
 	private static String TAG = DialActivity.class.getCanonicalName();
@@ -89,4 +90,5 @@ public class DialActivity extends BaseScreen {
 		
 		SipController.register(this);
 	}
+
 }

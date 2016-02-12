@@ -146,32 +146,6 @@ public class ScreenHome extends BaseScreen {
        super.onDestroy();
 	}
 	
-	@Override
-	public boolean hasMenu() {
-		return true;
-	}
-	
-	@Override
-	public boolean createOptionsMenu(Menu menu) {
-		menu.add(0, ScreenHome.MENU_SETTINGS, 0, "Settings");
-		/*MenuItem itemExit =*/ menu.add(0, ScreenHome.MENU_EXIT, 0, "Exit");
-		
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch(item.getItemId()){
-//			case ScreenHome.MENU_EXIT:
-//				((Main)getEngine().getMainActivity()).exit();
-//				break;
-//			case ScreenHome.MENU_SETTINGS:
-//				mScreenService.show(ScreenSettings.class);
-//				break;
-//		}
-		return true;
-	}
-	
 	
 	/**
 	 * ScreenHomeItem

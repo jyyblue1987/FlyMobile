@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.TimerTask;
 
 import org.doubango.imsdroid.Engine;
-import org.doubango.imsdroid.IMSDroid;
 import org.doubango.imsdroid.Main;
 import org.doubango.imsdroid.Services.IScreenService;
 import org.doubango.imsdroid.Utils.DialerUtils;
@@ -47,6 +46,7 @@ import org.doubango.ngn.utils.NgnStringUtils;
 import org.doubango.ngn.utils.NgnTimer;
 import org.doubango.ngn.utils.NgnUriUtils;
 
+import com.sip.flymobile.FlyMobileApplication;
 import com.sip.flymobile.R;
 import com.sip.flymobile.pages.fragments.DialActivity;
 
@@ -265,7 +265,7 @@ public class ScreenAV extends BaseScreen{
 		super.onStart();
 		Log.d(TAG,"onStart()");
 		
-		final KeyguardManager keyguardManager = IMSDroid.getKeyguardManager();
+		final KeyguardManager keyguardManager = FlyMobileApplication.getKeyguardManager();
 		if(keyguardManager != null){
 			if(mKeyguardLock == null){
 				mKeyguardLock = keyguardManager.newKeyguardLock(ScreenAV.TAG);
@@ -275,7 +275,7 @@ public class ScreenAV extends BaseScreen{
 			}
 		}
 		
-		final PowerManager powerManager = IMSDroid.getPowerManager();
+		final PowerManager powerManager = FlyMobileApplication.getPowerManager();
 		if(powerManager != null && mWakeLock == null){
 			mWakeLock = powerManager.newWakeLock(PowerManager.ON_AFTER_RELEASE | PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, TAG);
 			if(mWakeLock != null){
@@ -283,7 +283,7 @@ public class ScreenAV extends BaseScreen{
 			}
 		}
 		
-		if(mProxSensor == null && !IMSDroid.isBuggyProximitySensor()){
+		if(mProxSensor == null && !FlyMobileApplication.isBuggyProximitySensor()){
 			mProxSensor = new MyProxSensor(this);
 		}
 	}
@@ -358,160 +358,6 @@ public class ScreenAV extends BaseScreen{
     	   mAVSession.decRef();
        }
        super.onDestroy();
-	}
-	
-	@Override
-	public boolean hasMenu(){
-		return true;
-	}
-	
-	@Override
-	public boolean createOptionsMenu(Menu menu){
-		if(mAVSession == null){
-			return true;
-		}
-		
-//		MenuItem itemSendStopVideo = null;
-//		
-//		MenuItem itemPickUp = menu.add(0, ScreenAV.MENU_PICKUP, 0, getString(R.string.string_answer)).setIcon(R.drawable.phone_pick_up_48);
-//		MenuItem itemHangUp = menu.add(0, ScreenAV.MENU_HANGUP, 0, getString(R.string.string_endcall)).setIcon(R.drawable.phone_hang_up_48);
-//		MenuItem itemHoldResume = menu.add(0, ScreenAV.MENU_HOLD_RESUME, 0, mAVSession.isLocalHeld() ? getString(R.string.string_resume) : getString(R.string.string_hold))
-//			.setIcon(mAVSession.isLocalHeld() ? R.drawable.phone_resume_48 : R.drawable.phone_hold_48);
-//		if(mIsVideoCall){
-//			itemSendStopVideo = menu.add(1, ScreenAV.MENU_SEND_STOP_VIDEO, 0, getString(R.string.string_send_video));
-//		}
-//		MenuItem itemShareContent = menu.add(1, ScreenAV.MENU_SHARE_CONTENT, 0, "Share Content").setIcon(R.drawable.image_gallery_48);
-//		MenuItem itemSpeaker = menu.add(1, ScreenAV.MENU_SPEAKER, 0, mAVSession.isSpeakerOn() ? getString(R.string.string_speaker_off) : getString(R.string.string_speaker_on))
-//			.setIcon(R.drawable.phone_speaker_48);
-//		
-//		switch(mAVSession.getState()){
-//			case INCOMING:
-//			{
-//				itemPickUp.setEnabled(true);
-//				itemHangUp.setEnabled(true);
-//				itemHoldResume.setEnabled(false);
-//				itemSpeaker.setEnabled(false);
-//				if(itemSendStopVideo != null){
-//					itemSendStopVideo.setEnabled(false);
-//				}
-//				itemShareContent.setEnabled(false);
-//				break;
-//			}
-//			
-//			case INPROGRESS:
-//			{
-//				itemPickUp.setEnabled(false);
-//				itemHangUp.setEnabled(true);
-//				itemHoldResume.setEnabled(false);
-//				itemSpeaker.setEnabled(false);
-//				if(itemSendStopVideo != null){
-//					itemSendStopVideo.setEnabled(false);
-//				}
-//				itemShareContent.setEnabled(false);
-//				break;
-//			}
-//			
-//			case INCALL:
-//			{
-//				itemHangUp.setEnabled(true);
-//				itemHoldResume.setEnabled(true);
-//				itemSpeaker.setEnabled(true);
-//				
-//				if(itemSendStopVideo != null){
-//					itemSendStopVideo.setTitle(mAVSession.isSendingVideo() ? "Stop Video" : getString(R.string.string_send_video))
-//					.setIcon(mAVSession.isSendingVideo() ? R.drawable.video_stop_48 : R.drawable.video_start_48);
-//					itemSendStopVideo.setEnabled(true);
-//					//Replace Answer by camera switcher
-//					itemPickUp.setEnabled(true);
-//					itemPickUp.setTitle(getString(R.string.string_switch_camera)).setIcon(R.drawable.refresh_48);
-//				}
-//				else{
-//					itemPickUp.setEnabled(false);
-//				}
-//				itemShareContent.setEnabled(true);
-//				break;
-//			}
-//				
-//			case TERMINATED:
-//			case TERMINATING:
-//			{
-//				itemPickUp.setEnabled(false);
-//				itemHangUp.setEnabled(false);
-//				itemHoldResume.setEnabled(false);
-//				itemSpeaker.setEnabled(false);
-//				if(itemSendStopVideo != null){
-//					itemSendStopVideo.setEnabled(false);
-//				}
-//				itemShareContent.setEnabled(false);
-//				break;
-//			}
-//			default:
-//			{
-//				break;
-//			}
-//		}
-		
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if(mAVSession == null){
-			return true;
-		}
-		switch(item.getItemId()){
-			case ScreenAV.MENU_PICKUP:
-			{
-				if (mAVSession.getState() == InviteState.INCALL) {
-					Log.d(TAG, "Toggle Camera");
-					mAVSession.toggleCamera();
-				} else {
-					acceptCall();
-				}
-				break;
-			}
-				
-			case ScreenAV.MENU_HANGUP:
-			{
-				if(mTvInfo != null){
-					mTvInfo.setText("Ending the call...");
-				}
-				hangUpCall();
-				break;
-			}
-				
-			case ScreenAV.MENU_HOLD_RESUME:
-			{
-				if(mAVSession.isLocalHeld()){
-					mAVSession.resumeCall();
-				}
-				else{
-					mAVSession.holdCall();
-				}
-				break;
-			}
-				
-			case ScreenAV.MENU_SEND_STOP_VIDEO:
-			{
-				 startStopVideo(!mAVSession.isSendingVideo());
-				 break;
-			}
-				
-			case ScreenAV.MENU_SHARE_CONTENT:
-			{
-				 Intent intent = new Intent();
-				 intent.setType("*/*").addCategory(Intent.CATEGORY_OPENABLE).setAction(Intent.ACTION_GET_CONTENT);
-				 startActivityForResult(Intent.createChooser(intent, "Select content"), SELECT_CONTENT);
-				break;
-			}
-			
-			case ScreenAV.MENU_SPEAKER:
-			{
-				mAVSession.toggleSpeakerphone();
-				break;
-			}
-		}
-		return true;
 	}
 	
 	@Override
@@ -1219,7 +1065,7 @@ public class ScreenAV extends BaseScreen{
 		
 		MyProxSensor(ScreenAV avScreen){
 			mAVScreen = avScreen;
-			mSensorManager = IMSDroid.getSensorManager();
+			mSensorManager = FlyMobileApplication.getSensorManager();
 		}
 		
 		void start(){

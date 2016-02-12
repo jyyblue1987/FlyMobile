@@ -112,33 +112,6 @@ public class Main extends ActivityGroup {
 		}
 	}
 	
-    @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		if(mScreenService.getCurrentScreen().hasMenu()){
-			return mScreenService.getCurrentScreen().createOptionsMenu(menu);
-		}
-		
-		return false;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu){
-		if(mScreenService.getCurrentScreen().hasMenu()){
-			menu.clear();
-			return mScreenService.getCurrentScreen().createOptionsMenu(menu);
-		}
-		return false;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		IBaseScreen baseScreen = mScreenService.getCurrentScreen();
-		if(baseScreen instanceof Activity){
-			return ((Activity)baseScreen).onOptionsItemSelected(item);
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		if(mScreenService == null){
