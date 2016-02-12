@@ -34,12 +34,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 
 public class ScreenSplash extends BaseScreen {
 	private static String TAG = ScreenSplash.class.getCanonicalName();
 	
 	private BroadcastReceiver mBroadCastRecv;
+	ImageView m_imgSplash = null;
 	
 	public ScreenSplash() {
 		super(SCREEN_TYPE.SPLASH_T, TAG);
@@ -49,7 +54,11 @@ public class ScreenSplash extends BaseScreen {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		setContentView(R.layout.screen_splash);
+		setContentView(R.layout.layout_splash);
+		
+		m_imgSplash = (ImageView) findViewById(R.id.img_splash);		
+		
+		startAlphaAnimation();
 		
 		mBroadCastRecv = new BroadcastReceiver() {
 			@Override
@@ -59,8 +68,6 @@ public class ScreenSplash extends BaseScreen {
 				
 				if(NativeService.ACTION_STATE_EVENT.equals(action)){
 					if(intent.getBooleanExtra("started", false)){
-//						SipController.initSipAccount();
-//						SipController.setAccount("01548768268", "1234546");
 						mScreenService.show(MainActivity.class);
 						getEngine().getConfigurationService().putBoolean(NgnConfigurationEntry.GENERAL_AUTOSTART, true);
 						finish();
@@ -76,6 +83,26 @@ public class ScreenSplash extends BaseScreen {
 		//if (!NgnApplication.isIgnoringBatteryOptimizations()) {
 		//	NgnApplication.ignoringBatteryOptimizations(this);
 		//}
+	}
+	
+	private void startAlphaAnimation()
+	{
+		AlphaAnimation face_in_out_anim = new AlphaAnimation(0.1f, 1.0f);
+		face_in_out_anim.setDuration(1000);     
+		face_in_out_anim.setRepeatMode(Animation.REVERSE);
+		
+		if (m_imgSplash != null){
+			m_imgSplash.setAnimation(face_in_out_anim);
+		}
+		face_in_out_anim.start(); 		
+		
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+			}
+		}, 1500);
 	}
 	
 	@Override

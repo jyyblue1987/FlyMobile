@@ -1,13 +1,10 @@
 package com.sip.flymobile.pages;
 
 import org.doubango.imsdroid.Screens.BaseTabScreen;
-import org.doubango.imsdroid.Screens.ScreenHome;
-import org.doubango.imsdroid.Screens.IBaseScreen.SCREEN_TYPE;
 
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BaseView;
 
-import android.app.TabActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 

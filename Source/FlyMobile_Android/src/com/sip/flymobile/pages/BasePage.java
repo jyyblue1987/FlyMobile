@@ -35,7 +35,7 @@ public class BasePage implements BaseView {
 	
 	public void setContext(Activity context) {
 		this.context = context;
-		ActivityManager.getInstance().pushActivity(context);
+//		ActivityManager.getInstance().pushActivity(context);
 		setBackgroundColor(Color.WHITE);
 		initProgress();
 		
