@@ -21,6 +21,7 @@ package org.doubango.imsdroid.Screens;
 
 import org.doubango.imsdroid.Engine;
 import org.doubango.imsdroid.Services.IScreenService;
+import org.doubango.imsdroid.Services.Impl.ScreenService;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -84,7 +85,7 @@ public abstract class BaseScreen extends Activity implements IBaseScreen {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (!processKeyDown(keyCode, event)) {
+		if (!ScreenService.processKeyDown(keyCode, event)) {
 			return super.onKeyDown(keyCode, event);
 		}
 		return true;
@@ -126,31 +127,6 @@ public abstract class BaseScreen extends Activity implements IBaseScreen {
     	}
     }
     
-	public static boolean processKeyDown(int keyCode, KeyEvent event) {
-		final IScreenService screenService = ((Engine)Engine.getInstance()).getScreenService();
-		final IBaseScreen currentScreen = screenService.getCurrentScreen();
-		if (currentScreen != null) {
-			if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0
-					&& currentScreen.getType() != SCREEN_TYPE.HOME_T) {
-				if (currentScreen.hasBack()) {
-					if (!currentScreen.back()) {
-						return false;
-					}
-				} else {
-					screenService.back();
-				}
-				return true;
-			}
-			else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP){
-				if(currentScreen.getType() == SCREEN_TYPE.AV_T){
-					Log.d(TAG, "intercepting volume changed event");
-					if(((ScreenAV)currentScreen).onVolumeChanged((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))){
-						return true;
-					}
-				}
-			}			
-		}
-		return false;
-	}
+
 }
 

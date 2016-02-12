@@ -26,7 +26,9 @@ import java.util.Map;
 import org.doubango.imsdroid.Engine;
 import org.doubango.imsdroid.Main;
 import org.doubango.imsdroid.Screens.IBaseScreen;
+import org.doubango.imsdroid.Screens.ScreenAV;
 import org.doubango.imsdroid.Screens.ScreenHome;
+import org.doubango.imsdroid.Screens.BaseScreen.SCREEN_TYPE;
 import org.doubango.imsdroid.Services.IScreenService;
 import org.doubango.ngn.services.impl.NgnBaseService;
 
@@ -37,6 +39,7 @@ import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
@@ -229,5 +232,32 @@ public class ScreenService extends NgnBaseService implements IScreenService {
 	@Override
 	public IBaseScreen getScreen(String id) {
 		return (IBaseScreen)((Main)Engine.getInstance().getMainActivity()).getLocalActivityManager().getActivity(id);
+	}
+	
+	public static boolean processKeyDown(int keyCode, KeyEvent event) {
+		final IScreenService screenService = ((Engine)Engine.getInstance()).getScreenService();
+		final IBaseScreen currentScreen = screenService.getCurrentScreen();
+		if (currentScreen != null) {
+			if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0
+					&& currentScreen.getType() != SCREEN_TYPE.HOME_T) {
+				if (currentScreen.hasBack()) {
+					if (!currentScreen.back()) {
+						return false;
+					}
+				} else {
+					screenService.back();
+				}
+				return true;
+			}
+			else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+				if(currentScreen.getType() == SCREEN_TYPE.AV_T){
+					Log.d(TAG, "intercepting volume changed event");
+					if(((ScreenAV)currentScreen).onVolumeChanged((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))){
+						return true;
+					}
+				}
+			}			
+		}
+		return false;
 	}
 }

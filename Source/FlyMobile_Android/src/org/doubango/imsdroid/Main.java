@@ -26,6 +26,7 @@ import org.doubango.imsdroid.Screens.ScreenAV;
 import org.doubango.imsdroid.Screens.ScreenHome;
 import org.doubango.imsdroid.Screens.ScreenSplash;
 import org.doubango.imsdroid.Services.IScreenService;
+import org.doubango.imsdroid.Services.Impl.ScreenService;
 import org.doubango.ngn.sip.NgnAVSession;
 import org.doubango.ngn.utils.NgnPredicate;
 import org.doubango.ngn.utils.NgnStringUtils;
@@ -148,7 +149,7 @@ public class Main extends ActivityGroup {
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	if(!BaseScreen.processKeyDown(keyCode, event)){
+    	if(!ScreenService.processKeyDown(keyCode, event)){
     		return super.onKeyDown(keyCode, event);
     	}
     	return true;
