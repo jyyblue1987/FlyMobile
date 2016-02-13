@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/lay_fragment"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:gravity="center_vertical"
+	android:background="@color/app_color"
+	>
+	<RelativeLayout
+	    android:id="@+id/lay_back"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_vertical"
+	    android:background="@drawable/nav_button_bg" 
+	    android:orientation="horizontal" 
+	    >
+	    <Button
+	        android:id="@+id/btn_back"
+	        android:layout_width="30dip"
+	        android:layout_height="25dip"
+	        android:layout_centerInParent="true"
+	        android:background="@drawable/back_arrow" 
+	        />
+	    <common.component.ui.MyBKTextView
+	        android:id="@+id/txt_notify_count"
+	        android:layout_width="20dip"
+	        android:layout_height="20dip"
+	        android:gravity="center"
+	        android:layout_marginLeft="23dip"
+	        android:layout_centerVertical="true" 
+	        android:text="2"
+	        android:textColor="@color/white"
+	        android:textStyle="bold"
+	        android:textSize="15sp"
+	        android:background="@drawable/notify_icon"
+	        />
+	</RelativeLayout>
+  
+	<ImageView
+        android:id="@+id/img_avastar"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:src="@drawable/contact_icon" 
+        />
+
+	<LinearLayout
+	    android:id="@+id/lay_info"
+	    android:layout_width="0dip"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1.0"
+	    android:orientation="vertical" 
+	    >
+	    <common.component.ui.MyBKTextView
+	        android:id="@+id/txt_name"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:singleLine="true"
+	        android:ellipsize="end" 
+	        android:text="Hong Gil Dong"
+	        android:textColor="@color/white"
+	        android:textStyle="bold"
+	        android:textSize="20sp"	        
+	        />
+	    <common.component.ui.MyBKTextView
+	        android:id="@+id/txt_state"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center" 
+	        android:text="Doctor online"
+	        android:textColor="@color/white"	        
+	        android:textSize="15sp"	        
+	        />
+	</LinearLayout>
+		
+	<ImageView
+        android:id="@+id/img_call_icon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:background="@drawable/call_white_icon" 
+        />
+</LinearLayout>

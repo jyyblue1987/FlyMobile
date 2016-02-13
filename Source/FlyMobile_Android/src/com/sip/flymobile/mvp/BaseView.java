@@ -17,4 +17,7 @@ public interface BaseView {
 	public void changeProgress(String title, String message);
 	public void hideProgress();
 	public void finishView();
+	
+	public void onDestroy();
+	
 }

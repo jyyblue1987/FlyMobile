@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay_item_root"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:gravity="center_vertical"				
+	>
+	<ImageView
+	    android:id="@+id/img_avastar"
+	    android:layout_width="40dip"
+	    android:layout_height="40dip" 
+	    android:src="@drawable/contact_icon"
+	    />
+	<RelativeLayout
+	    android:id="@+id/lay_container"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/out_bg" 
+	    >
+	    <LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    >
+			<common.component.ui.MyBKTextView
+		        android:id="@+id/txt_name"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="5dip"
+		        android:layout_marginTop="5dip"	 
+		        android:layout_marginRight="5dip"       
+		        android:textStyle="bold"
+		        android:textColor="@color/red"
+		        android:text="Shar Bin"
+		        />
+			<ImageView
+	            android:id="@+id/img_content"
+	            android:layout_width="150dip"
+	            android:layout_height="150dip"
+	            android:layout_gravity="center_horizontal"	            
+	            />
+			
+			<LinearLayout
+		        android:id="@+id/lay_file_info" 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        android:layout_marginLeft="5dip"
+		        android:layout_marginTop="5dip"	 
+		        android:layout_marginRight="15dip"	        
+		        android:gravity="center_vertical"
+		        >
+			    <ImageView
+		            android:id="@+id/file_icon"
+		            android:layout_width="30dip"
+		            android:layout_height="30dip" 
+		            android:src="@drawable/pdf_icon"
+		            />
+		        <common.component.ui.MyBKTextView
+				    android:id="@+id/txt_filename"
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:text="Healthcare.pdf"		    
+			    	/>
+		    </LinearLayout>
+		    <github.ankushsachdeva.emojicon.EmojiconTextView 
+		        xmlns:android="http://schemas.android.com/apk/res/android"
+			    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+			    android:id="@+id/txt_body"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="5dip"
+		        android:layout_marginTop="5dip"	 
+		        android:layout_marginRight="15dip"
+			    android:text="Congratelation. Please..."
+			    emojicon:emojiconSize="28sp"
+			    />
+
+		    <LinearLayout
+		        android:id="@+id/lay_result_icon"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical|right"
+		        android:gravity="center_vertical"
+		        android:layout_marginRight="15dip"
+		        android:layout_marginBottom="5dip"       
+		        android:orientation="horizontal" 
+		        >
+		        <common.component.ui.MyTextView
+			        android:id="@+id/txt_date"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textColor="@color/grey"
+			        android:text="11:35"
+			        />
+		        <ImageView
+		            android:id="@+id/icon_result"
+		            android:layout_width="25dip"
+		            android:layout_height="25dip"
+		            android:src="@drawable/msg_state1" 
+		            />
+		    </LinearLayout>
+		   
+		    
+		</LinearLayout>
+	    <ProgressBar
+	        android:id="@+id/prog_file"
+	        style="?android:attr/progressBarStyleLarge"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true" />
+	        
+	    
+	</RelativeLayout>
+	
+</LinearLayout>

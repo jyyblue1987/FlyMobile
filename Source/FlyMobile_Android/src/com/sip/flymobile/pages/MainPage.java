@@ -4,7 +4,6 @@ import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
 import com.sip.flymobile.pages.fragments.ContactListActivity;
-import com.sip.flymobile.pages.fragments.ContactListPage;
 import com.sip.flymobile.pages.fragments.DialActivity;
 import com.sip.flymobile.pages.fragments.MessageHistoryActivity;
 
@@ -15,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import common.design.layout.LayoutUtils;
@@ -29,6 +29,7 @@ public class MainPage extends BasePageDecorator {
 	TextView m_txtNotify = null;
 	
 	TabActivity view; 
+	private static int		g_nTabNum = 0;
 	
 	private int [] tab_image_res = {
 		R.drawable.call_icon, R.drawable.msg_icon, R.drawable.recent_icon, R.drawable.contact_icon, R.drawable.setting_icon	
@@ -70,7 +71,7 @@ public class MainPage extends BasePageDecorator {
 		}
 		
 		//set Windows tab as default (zero based)
-		tabHost.setCurrentTab(0);
+		tabHost.setCurrentTab(g_nTabNum);
 	}
 	public void layoutControls()
 	{
@@ -82,6 +83,22 @@ public class MainPage extends BasePageDecorator {
 	{
 		super.initEvents();
 				
+		view = (TabActivity)getContext();
+		TabHost tabHost = view.getTabHost();
+		tabHost.setOnTabChangedListener(new OnTabChangeListener() {
+			
+			@Override
+			public void onTabChanged(String tabId) {
+				for(int i = 0; i < tab_label.length; i++ )
+				{
+					if( tab_label[i].equals(tabId) )
+					{
+						g_nTabNum = i;
+						break;
+					}
+				}
+			}
+		});
 	}
 	
 	public void initData()

@@ -39,7 +39,7 @@ public class BasePage implements BaseView {
 		setBackgroundColor(Color.WHITE);
 		initProgress();
 		
-		hideKeyboardTouchOutSideEditBox();
+//		hideKeyboardTouchOutSideEditBox();
 	}
 	
 	public Activity getContext()
@@ -179,5 +179,11 @@ public class BasePage implements BaseView {
 		AlertDialog alert = alert_confirm.create();
 		alert.show();
     }
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+    <include
+        android:id="@+id/fragment_header"
+        layout="@layout/fragment_chat_header" />
+    
+    <LinearLayout
+        android:id="@+id/lay_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        >
+        <ImageView 
+	        android:id="@+id/emoji_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:padding="4dp"
+	        android:src="@drawable/smiley"
+	        />
+		<github.ankushsachdeva.emojicon.EmojiconEditText
+	        android:id="@+id/emojicon_edit_text"
+	        android:layout_width="0dip"	        
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1.0"
+	        android:background="@drawable/edit_underline"
+	        emojicon:emojiconSize="28sp" />
+		<ImageView 
+	        android:id="@+id/submit_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:padding="4dp"
+	        android:src="@drawable/ic_action_send_now"
+	        />
+    </LinearLayout>
+    
+    <RelativeLayout
+        android:id="@+id/lay_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/lay_input"
+	    android:layout_below="@id/fragment_header"
+        >		
+        <ImageView
+            android:id="@+id/img_chat_back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            />
+        <com.handmark.pulltorefresh.library.PullToRefreshListView 
+		    android:id="@+id/lv"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:divider="@color/transparent"	    
+		    android:cacheColorHint="#00000000"	    
+		    android:listSelector="@android:color/transparent"
+		    android:background="@color/transparent"
+		    >
+	    
+		</com.handmark.pulltorefresh.library.PullToRefreshListView>
+        
+    </RelativeLayout>
+	
+</RelativeLayout>

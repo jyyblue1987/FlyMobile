@@ -10,23 +10,25 @@ import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.pages.ChatViewActivity;
 import com.sip.flymobile.pages.HeaderPage;
 
 import android.app.AlertDialog;
-import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
-import common.library.utils.MessageUtils;
-import common.library.utils.MessageUtils.OnButtonClickListener;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.MyListAdapter;
 import common.list.adapter.ViewHolder;
+import common.manager.activity.ActivityManager;
 
 
 public class MessageHistoryPage extends BasePageDecorator {
@@ -103,6 +105,25 @@ public class MessageHistoryPage extends BasePageDecorator {
 				m_adapterMessageList.notifyDataSetChanged();
 			}
 		});
+		
+		m_listItems.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {		
+				gotoChatViewPage(arg2);
+			}
+		});
+
+	}
+	
+	private void gotoChatViewPage(int pos)
+	{
+		JSONObject data = m_adapterMessageList.getData().get(pos);
+		
+		Bundle bundle = new Bundle();				
+	
+		bundle.putString(INTENT_EXTRA, data.toString());
+		ActivityManager.changeActivity(getContext().getParent(), ChatViewActivity.class, bundle, false, null );
 	}
 	
 	private void deleteMessageHistory(JSONObject data)

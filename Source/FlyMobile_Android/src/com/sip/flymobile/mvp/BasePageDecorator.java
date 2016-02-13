@@ -64,4 +64,9 @@ public class BasePageDecorator implements BaseView {
 	public void finishView() {
 		decorator.finishView();
 	}
+
+	@Override
+	public void onDestroy() {
+		decorator.onDestroy();		
+	}
 }
