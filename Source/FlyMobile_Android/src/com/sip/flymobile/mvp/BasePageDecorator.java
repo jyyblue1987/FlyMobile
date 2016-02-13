@@ -69,4 +69,14 @@ public class BasePageDecorator implements BaseView {
 	public void onDestroy() {
 		decorator.onDestroy();		
 	}
+
+	@Override
+	public void onResume() {
+		decorator.onResume();		
+	}
+
+	@Override
+	public void onPause() {
+		decorator.onPause();		
+	}
 }

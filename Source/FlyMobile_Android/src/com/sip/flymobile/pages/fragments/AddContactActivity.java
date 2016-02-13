@@ -31,4 +31,16 @@ public class AddContactActivity extends BaseScreen {
 		m_view.initData();
 		m_view.initEvents();
 	}	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();		
+		m_view.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		m_view.onPause();
+	}
 }

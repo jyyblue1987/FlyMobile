@@ -39,7 +39,15 @@ public class MainActivity extends BaseTabScreen {
 	protected void onResume() {
 		super.onResume();
 		
+		m_view.onResume();
 		SipController.register(this);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		m_view.onPause();
 	}
 		
 }

@@ -78,6 +78,16 @@
         <activity android:name="org.doubango.imsdroid.Screens.ScreenAV"></activity>
         <activity android:name="org.doubango.imsdroid.Screens.ScreenInterceptCall"/>
         
+        
+        <!-- Umeng Analytics -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="56be8d6ce0f55a38a0001ae1" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng" >
+        </meta-data>
     </application>
 
 

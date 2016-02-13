@@ -1,6 +1,8 @@
 package com.sip.flymobile.pages;
 
+import com.sip.flymobile.Const;
 import com.sip.flymobile.mvp.BaseView;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +21,7 @@ public class BasePage implements BaseView {
 	
 	protected  ProgressDialog progressDialog = null;
 
+	String mPageName = "";
 	boolean m_bActivityForground = false;
 	
 	protected Handler mMessageHandle = new Handler(){
@@ -30,12 +33,17 @@ public class BasePage implements BaseView {
 	
 	public BasePage()
 	{
-		
+
 	}
 	
 	public void setContext(Activity context) {
 		this.context = context;
 //		ActivityManager.getInstance().pushActivity(context);
+		
+		try {
+			mPageName = context.getClass().getSimpleName();
+		} catch(Exception e ){}
+		
 		setBackgroundColor(Color.WHITE);
 		initProgress();
 		
@@ -152,12 +160,29 @@ public class BasePage implements BaseView {
     	showProgress("", "Loading");
     }
     
+    @Override
 	public void onResume( ) {
 		m_bActivityForground = true;
+		
+		if( Const.ANALYTICS == true )
+	    {
+            try {
+		        MobclickAgent.onPageStart(mPageName);
+		        MobclickAgent.onResume(getContext());
+	        } catch(Exception e){}
+	    }
 	}
 	
+    @Override
 	public void onPause( ) {
 		m_bActivityForground = false;
+		if( Const.ANALYTICS == true )
+		{
+	        try {
+		        MobclickAgent.onPageEnd(mPageName);
+		        MobclickAgent.onPause(getContext());
+	        }catch(Exception e){}
+		}
 	}
     
     protected void quitProgram()

@@ -18,6 +18,9 @@ public interface BaseView {
 	public void hideProgress();
 	public void finishView();
 	
+	public void onResume();
+	public void onPause();
 	public void onDestroy();
+	
 	
 }

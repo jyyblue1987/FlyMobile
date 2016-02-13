@@ -2,6 +2,7 @@ package com.sip.flymobile.pages;
 
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.sip.SipController;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,5 +23,17 @@ public class ChatViewActivity extends Activity {
 		m_view.initData();
 		m_view.initEvents();
 	}	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();		
+		m_view.onResume();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		m_view.onPause();
+	}
 
 }

@@ -38,7 +38,7 @@ import android.util.Log;
 public class Engine extends NgnEngine{
 	private final static String TAG = Engine.class.getCanonicalName();
 	
-	private static final String CONTENT_TITLE = "IMSDroid";
+	private static final String CONTENT_TITLE = "FlyMobile";
 	
 	private static final int NOTIF_AVCALL_ID = 19833892;
 	private static final int NOTIF_SMS_ID = 19833893;

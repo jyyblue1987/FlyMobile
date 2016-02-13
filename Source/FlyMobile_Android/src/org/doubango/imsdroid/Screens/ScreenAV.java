@@ -46,10 +46,11 @@ import org.doubango.ngn.utils.NgnStringUtils;
 import org.doubango.ngn.utils.NgnTimer;
 import org.doubango.ngn.utils.NgnUriUtils;
 
+import com.sip.flymobile.Const;
 import com.sip.flymobile.FlyMobileApplication;
 import com.sip.flymobile.R;
 import com.sip.flymobile.pages.MainActivity;
-import com.sip.flymobile.pages.fragments.DialActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
@@ -303,6 +304,14 @@ public class ScreenAV extends BaseScreen{
 		if (mListener != null && mListener.canDetectOrientation()) {
 			mListener.disable();
 		}
+		
+		if( Const.ANALYTICS == true )
+		{
+	        try {
+		        MobclickAgent.onPageEnd("ScreenAV");
+		        MobclickAgent.onPause(this);
+	        }catch(Exception e){}
+		}
 	}
 
 	@Override
@@ -323,6 +332,14 @@ public class ScreenAV extends BaseScreen{
 		if (mListener != null && mListener.canDetectOrientation()) {
 			mListener.enable();
 		}
+		
+		if( Const.ANALYTICS == true )
+	    {
+            try {
+		        MobclickAgent.onPageStart("ScreenAV");
+		        MobclickAgent.onResume(this);
+	        } catch(Exception e){}
+	    }
 	}
 
 	@Override
@@ -989,7 +1006,7 @@ public class ScreenAV extends BaseScreen{
 					IBaseScreen currentScreen = mScreenService.getCurrentScreen();
 					boolean gotoHome = (currentScreen != null && currentScreen.getId() == getId());
 					if(gotoHome){
-						mScreenService.show(DialActivity.class);
+						mScreenService.show(MainActivity.class);
 					}
 					mScreenService.destroy(getId());
 				}});

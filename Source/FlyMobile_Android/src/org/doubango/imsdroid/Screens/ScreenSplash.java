@@ -25,8 +25,6 @@ import org.doubango.ngn.utils.NgnConfigurationEntry;
 
 import com.sip.flymobile.R;
 import com.sip.flymobile.pages.MainActivity;
-import com.sip.flymobile.pages.fragments.DialActivity;
-import com.sip.flymobile.sip.SipController;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,7 +32,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
