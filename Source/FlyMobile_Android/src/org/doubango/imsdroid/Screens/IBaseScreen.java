@@ -43,6 +43,7 @@ public interface IBaseScreen {
 		SETTINGS_T,
 		SECURITY_T,
 		SPLASH_T,
+		ADDCONTACT_T,
 		
 		TAB_CONTACTS, 
 		TAB_HISTORY_T, 

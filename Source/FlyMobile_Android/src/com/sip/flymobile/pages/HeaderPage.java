@@ -1,8 +1,12 @@
 package com.sip.flymobile.pages;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.imsdroid.Services.IScreenService;
+
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.pages.fragments.AddContactActivity;
 
 import android.util.TypedValue;
 import android.view.View;
@@ -47,6 +51,7 @@ public class HeaderPage extends BasePageDecorator {
 		
 		m_btnLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(50));
 		m_btnRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(50));
+		LayoutUtils.setSize(m_btnLeft, 50, 44, true);
 		
 		LayoutUtils.setSize(m_txtNotify, 53, 53, true);
 		m_txtNotify.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(44));
@@ -85,7 +90,8 @@ public class HeaderPage extends BasePageDecorator {
 	
 	protected void gotoBackPage()
 	{
-		super.finishView();		
+		IScreenService screenService = ((Engine)Engine.getInstance()).getScreenService();
+		screenService.back();
 	}
 	
 	protected void gotoNextPage()

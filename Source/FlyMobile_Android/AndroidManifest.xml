@@ -64,6 +64,7 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".pages.fragments.ContactListActivity" android:screenOrientation="portrait"      
             android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".pages.fragments.AddContactActivity" android:screenOrientation="portrait"/>
         
         <service android:name="org.doubango.imsdroid.NativeService"></service>
         

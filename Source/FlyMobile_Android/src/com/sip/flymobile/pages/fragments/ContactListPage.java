@@ -3,6 +3,8 @@ package com.sip.flymobile.pages.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.imsdroid.Services.IScreenService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +19,7 @@ import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,6 +29,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
+import common.design.utils.ResourceUtils;
 import common.library.utils.CheckUtils;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.MyListAdapter;
@@ -63,7 +67,9 @@ public class ContactListPage extends BasePageDecorator {
 		header.setButtonVisible(1, View.VISIBLE);
 		
 		Button btnLeft = header.getNavigateButton(0);
+		LayoutUtils.setSize(btnLeft, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
 		btnLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(90));
+		btnLeft.setBackgroundColor(Color.TRANSPARENT);
 		
 		Button btnRight = header.getNavigateButton(1);
 		LayoutUtils.setSize(btnRight, 65, 65, true);
@@ -132,7 +138,7 @@ public class ContactListPage extends BasePageDecorator {
 			
 			@Override
 			public void onClick(View v) {
-				
+				gotoAddContactPage();
 			}
 		});
 		
@@ -152,7 +158,14 @@ public class ContactListPage extends BasePageDecorator {
 			}
 		});
 		
-		
+		ResourceUtils.addClickEffect(getContext().findViewById(R.id.search_bar).findViewById(R.id.img_del_search));
+		getContext().findViewById(R.id.search_bar).findViewById(R.id.img_del_search).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				m_editSearchText.setText("");
+			}
+		});
 		
 	}
 	
@@ -168,6 +181,11 @@ public class ContactListPage extends BasePageDecorator {
 		getContext().findViewById(R.id.search_bar).setVisibility(View.GONE);		
 	}
 	
+	private void gotoAddContactPage()
+	{
+		IScreenService screenService = ((Engine)Engine.getInstance()).getScreenService();
+		screenService.show(AddContactActivity.class);
+	}
 	class ContactListAdapter extends MyListAdapter implements SectionIndexer{
 		public ContactListAdapter(Context context, List<JSONObject> data,
 				int resource, ItemCallBack callback) {

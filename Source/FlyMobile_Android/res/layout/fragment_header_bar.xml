@@ -22,7 +22,7 @@
 		    android:textColor="@color/white"
 		    android:text=""
 		    android:clickable="false"
-		    android:background="@color/transparent"
+		    android:background="@drawable/back_arrow"
 		    />
 		<common.component.ui.MyBKTextView
 	        android:id="@+id/txt_notify_count"

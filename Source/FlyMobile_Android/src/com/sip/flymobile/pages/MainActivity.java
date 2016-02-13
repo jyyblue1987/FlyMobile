@@ -15,7 +15,7 @@ public class MainActivity extends BaseTabScreen {
 	private static String TAG = MainActivity.class.getCanonicalName();
 	ImageView m_imgSplash = null;
 	
-	BaseView	m_view = null; 
+	BaseView	m_view = null;
 	
 	public MainActivity()
 	{

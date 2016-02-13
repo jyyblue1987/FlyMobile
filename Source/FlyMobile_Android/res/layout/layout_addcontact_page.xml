@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    >
+	<include android:id="@+id/fragment_header"
+		layout="@layout/fragment_header_bar" />
+	<LinearLayout
+	    android:id="@+id/lay_name"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_vertical"
+	    android:orientation="horizontal" 
+	    android:layout_margin="20dip"
+	    >
+	    <ImageView
+	        android:id="@+id/img_contact_icon"
+	        android:layout_width="30dip"
+	        android:layout_height="30dip"
+	        android:src="@drawable/contact_icon"
+	        />
+	    <EditText
+	        android:id="@+id/edit_contact_name"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dip"
+	        android:background="@color/transparent"
+	        android:hint="Name" 
+	        />
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:id="@+id/lay_divider_line"
+	    android:layout_width="match_parent"
+	    android:layout_height="2dip"
+	    android:layout_marginLeft="20dip"
+	    android:layout_marginRight="20dip"
+	    android:orientation="horizontal"
+	    android:background="@color/app_grey_color" 
+	    >	    
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:id="@+id/lay_mobile"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_vertical"
+	    android:orientation="horizontal" 
+	    android:layout_margin="20dip"
+	    >
+	    <ImageView
+	        android:id="@+id/img_call_icon"
+	        android:layout_width="30dip"
+	        android:layout_height="30dip"
+	        android:src="@drawable/call_icon"
+	        />
+	    <EditText
+	        android:id="@+id/edit_mobile"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dip"
+	        android:background="@color/transparent"
+	        android:hint="Phone Number" 
+	        />
+	</LinearLayout>
+	
+	
+	<Button
+	    android:id="@+id/btn_add_contact"
+	    android:layout_width="150dip"
+	    android:layout_height="35dip"
+	    android:text="add contact"
+	    android:textColor="@color/white"
+	    android:background="@drawable/charge_credit"
+	    />
+</LinearLayout>
