@@ -777,9 +777,15 @@ public class ScreenAV extends BaseScreen{
 		final TextView tvRemote = (TextView)mViewTrying.findViewById(R.id.view_call_trying_textView_remote);
 		final ImageButton btPick = (ImageButton)mViewTrying.findViewById(R.id.view_call_trying_imageButton_pick);
 		final ImageButton btHang = (ImageButton)mViewTrying.findViewById(R.id.view_call_trying_imageButton_hang);
+		final ImageButton btSpeaker = (ImageButton)mViewTrying.findViewById(R.id.view_call_trying_imageButton_speaker);
+		final ImageButton btMute = (ImageButton)mViewTrying.findViewById(R.id.view_call_trying_imageButton_mute);
+		
 		final ImageView ivAvatar = (ImageView)mViewTrying.findViewById(R.id.view_call_trying_imageView_avatar);
+		
 		ResourceUtils.addClickEffect(btPick);
 		ResourceUtils.addClickEffect(btHang);
+		ResourceUtils.addClickEffect(btSpeaker);
+		ResourceUtils.addClickEffect(btMute);
 		btPick.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -830,6 +836,13 @@ public class ScreenAV extends BaseScreen{
 		final TextView tvRemote = (TextView)mViewInAudioCall.findViewById(R.id.view_call_incall_audio_textView_remote);
 		final ImageButton btHang = (ImageButton)mViewInAudioCall.findViewById(R.id.view_call_incall_audio_imageButton_hang);
 		final ImageView ivAvatar = (ImageView)mViewInAudioCall.findViewById(R.id.view_call_incall_audio_imageView_avatar);
+		final ImageButton btSpeaker = (ImageButton)mViewTrying.findViewById(R.id.view_call_trying_imageButton_speaker);
+		final ImageButton btMute = (ImageButton)mViewTrying.findViewById(R.id.view_call_trying_imageButton_mute);
+
+		ResourceUtils.addClickEffect(btHang);
+		ResourceUtils.addClickEffect(btSpeaker);
+		ResourceUtils.addClickEffect(btMute);
+
 		mTvDuration = (TextView)mViewInAudioCall.findViewById(R.id.view_call_incall_audio_textView_duration);
 		
 		btHang.setOnClickListener(new View.OnClickListener() {

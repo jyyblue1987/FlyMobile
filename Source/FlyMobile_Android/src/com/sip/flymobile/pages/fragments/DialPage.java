@@ -125,10 +125,10 @@ public class DialPage extends BasePageDecorator {
 		m_txtContactNumber.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeWidth(45));
 		
 		
-		LayoutUtils.setSize(m_btnDial, 116, 116, true);
+		LayoutUtils.setSize(m_btnNotification, 140, 140, true);
 		
-		LayoutUtils.setMargin(m_btnNotification, 190, 0, 0, 0, true);		
-		LayoutUtils.setSize(m_btnNotification, 116, 116, true);
+		LayoutUtils.setMargin(m_btnDial, 190, 0, 0, 0, true);
+		LayoutUtils.setSize(m_btnDial, 140, 140, true);
 		
 	}
 	

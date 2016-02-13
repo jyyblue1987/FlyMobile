@@ -217,18 +217,18 @@
             android:layout_weight="2"
             android:gravity="center"            
             >
-            <Button                
-                android:id="@+id/btn_dial"
-                android:layout_width="35dip"
-                android:layout_height="35dip" 
-                android:background="@drawable/call"
-                />
             <Button
                 android:id="@+id/btn_noti_callback"
                 android:layout_width="35dip"
                 android:layout_height="35dip" 
-                android:layout_marginLeft="30dip"
                 android:background="@drawable/noti"
+                />
+            <Button                
+                android:id="@+id/btn_dial"
+                android:layout_width="35dip"
+                android:layout_height="35dip"
+                android:layout_marginLeft="30dip" 
+                android:background="@drawable/call"
                 />
         </LinearLayout>
     </LinearLayout>
