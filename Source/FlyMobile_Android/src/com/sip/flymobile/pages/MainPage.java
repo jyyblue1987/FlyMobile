@@ -7,6 +7,7 @@ import com.sip.flymobile.pages.fragments.CallHistoryActivity;
 import com.sip.flymobile.pages.fragments.ContactListActivity;
 import com.sip.flymobile.pages.fragments.DialActivity;
 import com.sip.flymobile.pages.fragments.MessageHistoryActivity;
+import com.sip.flymobile.pages.fragments.SettingActivity;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -45,7 +46,7 @@ public class MainPage extends BasePageDecorator {
 		MessageHistoryActivity.class,
 		CallHistoryActivity.class,
 		ContactListActivity.class,
-		DialActivity.class		
+		SettingActivity.class		
 	};
 	
 	public MainPage(BaseView view)
