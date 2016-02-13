@@ -18,8 +18,10 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 import common.design.layout.LayoutUtils;
@@ -33,6 +35,7 @@ import common.list.adapter.ViewHolder;
 public class ContactListPage extends BasePageDecorator {
 	ListView	m_listItems = null;
 	MyListAdapter	m_adapterContactList = null;
+	EditText		m_editSearchText = null;
 	
 	public ContactListPage(BaseView view)
 	{
@@ -42,18 +45,44 @@ public class ContactListPage extends BasePageDecorator {
 	{
 		super.findViews();
 		m_listItems = (ListView)getContext().findViewById(R.id.list_items);
+		m_editSearchText = (EditText) getContext().findViewById(R.id.search_bar).findViewById(R.id.edit_search);
 	}
 		
-	public void layoutSearchbarControls()
-	{
-		
-	}
 	public void layoutControls()
 	{
 		super.layoutControls();
 		
+		layoutNavigateControls();
+		layoutSearchbarControls();
+	}
+	
+	private void layoutNavigateControls()
+	{
 		HeaderPage header = (HeaderPage) decorator;
+		header.setButtonVisible(0, View.VISIBLE);
 		header.setButtonVisible(1, View.VISIBLE);
+		
+		Button btnLeft = header.getNavigateButton(0);
+		btnLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(90));
+		
+		Button btnRight = header.getNavigateButton(1);
+		LayoutUtils.setSize(btnRight, 65, 65, true);
+	}
+	
+	public void layoutSearchbarControls()
+	{
+		RelativeLayout layLeft = (RelativeLayout) getContext().findViewById(R.id.search_bar).findViewById(R.id.lay_left);
+		Button btnLeft = (Button) getContext().findViewById(R.id.search_bar).findViewById(R.id.btn_left_button);
+
+		LayoutUtils.setSize(layLeft, 160, 125, true);
+		LayoutUtils.setSize(btnLeft, 50, 44, true);
+		
+		LayoutUtils.setPadding(getContext().findViewById(R.id.search_bar).findViewById(R.id.lay_search), 20, 0, 20, 0, true);
+		LayoutUtils.setSize(getContext().findViewById(R.id.search_bar).findViewById(R.id.img_search_icon), 45, 45, true);
+		
+		m_editSearchText.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(50));
+		LayoutUtils.setMargin(m_editSearchText, 10, 0, 10, 0, true);
+		LayoutUtils.setSize(getContext().findViewById(R.id.search_bar).findViewById(R.id.img_del_search), 40, 40, true);		
 	}
 	
 	private void changeNavigateButton()
@@ -61,20 +90,13 @@ public class ContactListPage extends BasePageDecorator {
 		HeaderPage header = (HeaderPage) decorator;
 		
 		header.setTitle("Contact");
-		
-		header.setButtonVisible(0, View.VISIBLE);
-		header.setButtonVisible(1, View.VISIBLE);
-		
+
 		header.setButtonText(0, "+");
-		Button btnLeft = header.getNavigateButton(0);
-		btnLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(90));
-	
+		
 		Button btnRight = header.getNavigateButton(1);
 		btnRight.setBackgroundResource(R.drawable.search);
-		LayoutUtils.setSize(btnRight, 80, 80, true);
-		
-		
 	}
+	
 	public void initData()
 	{
 		super.initData();
@@ -92,7 +114,8 @@ public class ContactListPage extends BasePageDecorator {
 		}
 		
 		
-		changeNavigateButton();
+		changeNavigateButton();		
+		showHeaderBar();
 		
 		m_adapterContactList = new ContactListAdapter(getContext(), list, R.layout.fragment_contact_list_item, null);
 		
@@ -117,9 +140,32 @@ public class ContactListPage extends BasePageDecorator {
 			
 			@Override
 			public void onClick(View v) {
-				
+				showSearchBar();
 			}
 		});
+		
+		getContext().findViewById(R.id.search_bar).findViewById(R.id.lay_left).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				showHeaderBar();
+			}
+		});
+		
+		
+		
+	}
+	
+	private void showSearchBar()
+	{
+		getContext().findViewById(R.id.fragment_header).setVisibility(View.GONE);
+		getContext().findViewById(R.id.search_bar).setVisibility(View.VISIBLE);
+	}
+	
+	private void showHeaderBar()
+	{
+		getContext().findViewById(R.id.fragment_header).setVisibility(View.VISIBLE);
+		getContext().findViewById(R.id.search_bar).setVisibility(View.GONE);		
 	}
 	
 	class ContactListAdapter extends MyListAdapter implements SectionIndexer{

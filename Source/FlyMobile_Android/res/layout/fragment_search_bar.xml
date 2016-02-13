@@ -26,6 +26,7 @@
 	</RelativeLayout>
 	
 	<LinearLayout
+	    android:id="@+id/lay_search"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
@@ -35,18 +36,22 @@
 	    android:background="@drawable/edit_underline" 
 	    >
 	    <ImageView
+	        android:id="@+id/img_search_icon"
 	        android:layout_width="30dip"
 	        android:layout_height="30dip"
 	        android:src="@drawable/search" 
 	        />
 	    <EditText
+	        android:id="@+id/edit_search"
 	        android:layout_width="0dip"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1.0"
-	        android:text="123"	    
+	        android:hint="name, mobile"
 	        android:textColor="@color/white"     
+	        android:background="@color/transparent"
 	        />
 	    <ImageView
+	        android:id="@+id/img_del_search"
 	        android:layout_width="25dip"
 	        android:layout_height="25dip"
 	        android:src="@drawable/delete" 
