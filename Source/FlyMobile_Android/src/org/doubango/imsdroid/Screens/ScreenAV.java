@@ -796,13 +796,16 @@ public class ScreenAV extends BaseScreen{
 		switch(mAVSession.getState()){
 	        case INCOMING:
 	        	mTvInfo.setText(getString(R.string.string_call_incoming));
+	        	mViewTrying.findViewById(R.id.view_call_trying_imageButton_speaker).setVisibility(View.GONE);
+        		mViewTrying.findViewById(R.id.view_call_trying_imageButton_mute).setVisibility(View.GONE);
+        		((TextView)mViewTrying.findViewById(R.id.view_call_trying_textView_display)).setText("is calling you...");
 	        	break;
 	        case INPROGRESS:
 	        case REMOTE_RINGING:
 	        case EARLY_MEDIA:
 	        default:
 	        	mTvInfo.setText(getString(R.string.string_call_outgoing));
-	        	btPick.setVisibility(View.GONE);
+	        	btPick.setVisibility(View.GONE);	        	
 	        	break;
 	    }
 		
@@ -931,6 +934,8 @@ public class ScreenAV extends BaseScreen{
 		final ImageView ivAvatar = (ImageView)mViewTermwait.findViewById(R.id.view_call_trying_imageView_avatar);
 		mViewTermwait.findViewById(R.id.view_call_trying_imageButton_pick).setVisibility(View.GONE);
 		mViewTermwait.findViewById(R.id.view_call_trying_imageButton_hang).setVisibility(View.GONE);
+		mViewTermwait.findViewById(R.id.view_call_trying_imageButton_speaker).setVisibility(View.GONE);
+		mViewTermwait.findViewById(R.id.view_call_trying_imageButton_mute).setVisibility(View.GONE);
 		mViewTermwait.setBackgroundResource(R.drawable.grad_bkg_termwait);
 		
 		tvRemote.setText(mRemotePartyDisplayName);

@@ -300,7 +300,7 @@ public class DialPage extends BasePageDecorator {
 		INgnSipService mSipService = Engine.getInstance().getSipService();
 		if(mSipService.isRegistered() && !NgnStringUtils.isNullOrEmpty(phoneNumber)){
 			ScreenAV.makeCall(phoneNumber, NgnMediaType.Audio);
-			m_editDialNumber.setText(NgnStringUtils.emptyValue());
+//			m_editDialNumber.setText(NgnStringUtils.emptyValue());
 		}
 		return true;
 	}
