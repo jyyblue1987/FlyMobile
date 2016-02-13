@@ -31,12 +31,12 @@ import common.list.adapter.ViewHolder;
 import common.manager.activity.ActivityManager;
 
 
-public class MessageHistoryPage extends BasePageDecorator {
+public class CallHistoryPage extends BasePageDecorator {
 	ListView	m_listItems = null;
-	MyListAdapter	m_adapterMessageList = null;
+	MyListAdapter	m_adapterCallList = null;
 	
 	boolean 	m_bEditMode = false;
-	public MessageHistoryPage(BaseView view)
+	public CallHistoryPage(BaseView view)
 	{
 		super(view);
 	}
@@ -67,7 +67,7 @@ public class MessageHistoryPage extends BasePageDecorator {
 		super.initData();
 		
 		HeaderPage header = (HeaderPage) decorator;
-		header.setTitle("Messaging");
+		header.setTitle("Recent/Call log");
 		
 		
 		List<JSONObject> list = new ArrayList<JSONObject>();
@@ -86,9 +86,9 @@ public class MessageHistoryPage extends BasePageDecorator {
 		
 		changeNavigateButton();
 		
-		m_adapterMessageList = new MessageListAdapter(getContext(), list, R.layout.fragment_list_message_history_item, null);
+		m_adapterCallList = new CallListAdapter(getContext(), list, R.layout.fragment_list_call_history_item, null);
 		
-		m_listItems.setAdapter(m_adapterMessageList);
+		m_listItems.setAdapter(m_adapterCallList);
 	}
 	
 	public void initEvents()
@@ -102,7 +102,7 @@ public class MessageHistoryPage extends BasePageDecorator {
 			public void onClick(View v) {
 				m_bEditMode = !m_bEditMode;					
 				changeNavigateButton();
-				m_adapterMessageList.notifyDataSetChanged();
+				m_adapterCallList.notifyDataSetChanged();
 			}
 		});
 		
@@ -118,17 +118,17 @@ public class MessageHistoryPage extends BasePageDecorator {
 	
 	private void gotoChatViewPage(int pos)
 	{
-		JSONObject data = m_adapterMessageList.getData().get(pos);
-		
-		Bundle bundle = new Bundle();				
-	
-		bundle.putString(INTENT_EXTRA, data.toString());
-		ActivityManager.changeActivity(getContext().getParent(), ChatViewActivity.class, bundle, false, null );
+//		JSONObject data = m_adapterCallList.getData().get(pos);
+//		
+//		Bundle bundle = new Bundle();				
+//	
+//		bundle.putString(INTENT_EXTRA, data.toString());
+//		ActivityManager.changeActivity(getContext().getParent(), ChatViewActivity.class, bundle, false, null );
 	}
 	
-	private void deleteMessageHistory(JSONObject data)
+	private void deleteCallHistory(JSONObject data)
 	{
-		List<JSONObject> list = m_adapterMessageList.getData();
+		List<JSONObject> list = m_adapterCallList.getData();
 		
 		for(int i = 0; i < list.size(); i++)
 		{
@@ -136,15 +136,15 @@ public class MessageHistoryPage extends BasePageDecorator {
 			if( item.optInt(Const.ID, -1) == data.optInt(Const.ID, -1) )
 			{
 				list.remove(i);
-				m_adapterMessageList.notifyDataSetChanged();
+				m_adapterCallList.notifyDataSetChanged();
 				break;
 			}
 		}
 	}
 	
 	
-	class MessageListAdapter extends MyListAdapter {
-		public MessageListAdapter(Context context, List<JSONObject> data,
+	class CallListAdapter extends MyListAdapter {
+		public CallListAdapter(Context context, List<JSONObject> data,
 				int resource, ItemCallBack callback) {
 			super(context, data, resource, callback);
 		}
@@ -153,34 +153,40 @@ public class MessageHistoryPage extends BasePageDecorator {
 		{
 			final JSONObject item = getItem(position);
 			
-			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.lay_edit_message), 180, 200, true);
+			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.lay_edit_call), 180, 200, true);
 			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_remove_icon), 55, 55, true);
 			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_remove_divider), 3, 145, true);			
 			
 			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.img_contact_icon), 40, 20, 0, 20, true);
 			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_contact_icon), 160, 160, true);
 			
-			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.lay_message_info), 40, 0, 40, 0, true);
+			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.lay_call_info), 40, 0, 40, 0, true);
 			
 			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeWidth(50));
-			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_sent_flag), 72, 40, true);
-			((TextView)ViewHolder.get(rowView, R.id.txt_content)).setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeWidth(40));
+			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_state), 35, 35, true);
+			((TextView)ViewHolder.get(rowView, R.id.txt_call_time)).setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeWidth(40));
+			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.txt_call_time), 10, 0, 0, 0, true);
+			
+			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_sms_icon), 65, 60, true);
+			
+			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.img_call_icon), 60, 0, 60, 0, true);
+			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_icon), 60, 60, true);
 			
 			if( m_bEditMode == true )
-				ViewHolder.get(rowView, R.id.lay_edit_message).setVisibility(View.VISIBLE);
+				ViewHolder.get(rowView, R.id.lay_edit_call).setVisibility(View.VISIBLE);
 			else
-				ViewHolder.get(rowView, R.id.lay_edit_message).setVisibility(View.GONE);
+				ViewHolder.get(rowView, R.id.lay_edit_call).setVisibility(View.GONE);
 			
-			ViewHolder.get(rowView, R.id.lay_edit_message).setOnClickListener(new View.OnClickListener() {
+			ViewHolder.get(rowView, R.id.lay_edit_call).setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getContext().getParent());
-					alert_confirm.setMessage("Do you want to delete this message history?").setCancelable(false).setPositiveButton("OK",
+					alert_confirm.setMessage("Do you want to delete this call history?").setCancelable(false).setPositiveButton("OK",
 						new DialogInterface.OnClickListener() {
 						    @Override
 						    public void onClick(DialogInterface dialog, int which) {
-						    	deleteMessageHistory(item);
+						    	deleteCallHistory(item);
 						    }
 						}).setNegativeButton("Cancel",
 						new DialogInterface.OnClickListener() {
