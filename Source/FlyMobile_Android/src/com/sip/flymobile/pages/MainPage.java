@@ -3,6 +3,8 @@ package com.sip.flymobile.pages;
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.pages.fragments.ContactListActivity;
+import com.sip.flymobile.pages.fragments.ContactListPage;
 import com.sip.flymobile.pages.fragments.DialActivity;
 import com.sip.flymobile.pages.fragments.MessageHistoryActivity;
 
@@ -39,8 +41,8 @@ public class MainPage extends BasePageDecorator {
 	Class<?> [] destAct = {
 		DialActivity.class,
 		MessageHistoryActivity.class,
-		DialActivity.class,
-		DialActivity.class,
+		ContactListActivity.class,
+		ContactListActivity.class,
 		DialActivity.class		
 	};
 	

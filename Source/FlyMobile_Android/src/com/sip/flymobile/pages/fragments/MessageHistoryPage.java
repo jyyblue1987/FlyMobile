@@ -48,29 +48,26 @@ public class MessageHistoryPage extends BasePageDecorator {
 	{
 		super.layoutControls();
 		
-		if( decorator instanceof HeaderPage )
-		{
-			HeaderPage header = (HeaderPage) decorator;
-			header.setButtonVisible(1, View.VISIBLE);
-			header.setButtonText(1, "Done");
-		}
+		HeaderPage header = (HeaderPage) decorator;
+		header.setButtonVisible(1, View.VISIBLE);
 	}
 	
 	private void changeNavigateButton()
 	{
-		if( decorator instanceof HeaderPage )
-		{
-			HeaderPage header = (HeaderPage) decorator;
-			if( m_bEditMode == false )
-				header.setButtonText(1, "Edit");
-			else
-				header.setButtonText(1, "Done");
-		}
+		HeaderPage header = (HeaderPage) decorator;
+		if( m_bEditMode == false )
+			header.setButtonText(1, "Edit");
+		else
+			header.setButtonText(1, "Done");
 	}
 	public void initData()
 	{
 		super.initData();
-
+		
+		HeaderPage header = (HeaderPage) decorator;
+		header.setTitle("Messaging");
+		
+		
 		List<JSONObject> list = new ArrayList<JSONObject>();
 		for(int i = 0; i < 20; i++)
 		{
@@ -96,19 +93,16 @@ public class MessageHistoryPage extends BasePageDecorator {
 	{
 		super.initEvents();
 
-		if( decorator instanceof HeaderPage )
-		{
-			HeaderPage header = (HeaderPage) decorator;
-			header.setButtonEvents(1, new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					m_bEditMode = !m_bEditMode;					
-					changeNavigateButton();
-					m_adapterMessageList.notifyDataSetChanged();
-				}
-			});
-		}
+		HeaderPage header = (HeaderPage) decorator;
+		header.setButtonEvents(1, new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				m_bEditMode = !m_bEditMode;					
+				changeNavigateButton();
+				m_adapterMessageList.notifyDataSetChanged();
+			}
+		});
 	}
 	
 	private void deleteMessageHistory(JSONObject data)

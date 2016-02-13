@@ -7,17 +7,22 @@
 	>
 	<RelativeLayout
 	    android:id="@+id/lay_left"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"	
-	    android:layout_centerVertical="true"     
+	    android:layout_width="30dip"
+	    android:layout_height="20dip"	
+	    android:layout_centerVertical="true"
+	    android:clickable="true"    
+	    android:background="@drawable/nav_button_bg" 
 	    android:visibility="invisible"
 	    >
 		<Button
 		    android:id="@+id/btn_left_button"
-		    android:layout_width="30dip"
-		    android:layout_height="20dip"
-		    android:layout_centerVertical="true"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerInParent="true"
 		    android:textColor="@color/white"
+		    android:text=""
+		    android:clickable="false"
+		    android:background="@color/transparent"
 		    />
 		<common.component.ui.MyBKTextView
 	        android:id="@+id/txt_notify_count"
@@ -28,21 +33,34 @@
 	        android:textColor="@color/white"
 	        android:textStyle="bold"
 	        android:textSize="10sp"
+	        android:visibility="gone"
 	        />	    
 	    	    
 	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/lay_right"
+	    android:layout_width="30dip"
+	    android:layout_height="20dip"	
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentRight="true"
+	    android:clickable="true"
+	    android:background="@drawable/nav_button_bg"
+	    android:visibility="invisible"
+	    >
+		<Button
+		    android:id="@+id/btn_right_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerInParent="true"
+		    android:clickable="false"
+		    android:text=""
+		    android:textColor="@color/white"
+		    android:background="@color/transparent"
+		    />			    
+	</RelativeLayout>
 
-	<Button
-		android:id="@+id/btn_right_button"
-		android:layout_width="30dip"
-		android:layout_height="20dip" 
-		android:layout_alignParentRight="true"
-		android:layout_centerVertical="true"
-		android:text="Done"
-		android:background="@color/grey"
-		android:textColor="@color/white"		
-		android:visibility="invisible"
-		/>
+	
 	<TextView
 	    android:id="@+id/txt_navigate_bar_title"
 	    android:layout_width="wrap_content"

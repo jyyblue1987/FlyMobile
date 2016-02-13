@@ -8,15 +8,15 @@ import com.sip.flymobile.pages.HeaderPage;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class MessageHistoryActivity extends Activity {
+public class ContactListActivity extends Activity {
 	BaseView	m_view = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_message_history_page);
+		setContentView(R.layout.layout_contact_page);
 		
-		m_view = new MessageHistoryPage(new HeaderPage(new BasePage()));
+		m_view = new ContactListPage(new HeaderPage(new BasePage()));
 		
 		m_view.setContext(this);
 		m_view.findViews();

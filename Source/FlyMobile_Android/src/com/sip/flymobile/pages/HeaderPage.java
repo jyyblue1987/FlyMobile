@@ -7,6 +7,7 @@ import com.sip.flymobile.mvp.BaseView;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
@@ -15,6 +16,8 @@ import common.design.utils.ResourceUtils;
 
 public class HeaderPage extends BasePageDecorator {
 	TextView 	m_txtPageTitle = null;
+	RelativeLayout		m_layLeft = null;
+	RelativeLayout		m_layRight = null;
 	Button		m_btnLeft = null;
 	Button		m_btnRight = null;
 	
@@ -29,6 +32,8 @@ public class HeaderPage extends BasePageDecorator {
 		super.findViews();
 		
 		m_txtPageTitle = (TextView) getContext().findViewById(R.id.fragment_header).findViewById(R.id.txt_navigate_bar_title);
+		m_layLeft = (RelativeLayout) getContext().findViewById(R.id.fragment_header).findViewById(R.id.lay_left);
+		m_layRight = (RelativeLayout) getContext().findViewById(R.id.fragment_header).findViewById(R.id.lay_right);		
 		m_btnLeft = (Button) getContext().findViewById(R.id.fragment_header).findViewById(R.id.btn_left_button);
 		m_btnRight = (Button) getContext().findViewById(R.id.fragment_header).findViewById(R.id.btn_right_button);		
 		m_txtNotify = (TextView) getContext().findViewById(R.id.fragment_header).findViewById(R.id.txt_notify_count);
@@ -37,10 +42,9 @@ public class HeaderPage extends BasePageDecorator {
 	{
 		super.layoutControls();
 		
-		LayoutUtils.setSize(m_btnLeft, 218, 157, true);
-		LayoutUtils.setSize(m_btnRight, 218, 157, true);
-		ResourceUtils.addClickEffect(m_btnLeft);
-		ResourceUtils.addClickEffect(m_btnRight);
+		LayoutUtils.setSize(m_layLeft, 160, 125, true);
+		LayoutUtils.setSize(m_layRight, 160, 125, true);
+		
 		m_btnLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(50));
 		m_btnRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(50));
 		
@@ -54,7 +58,7 @@ public class HeaderPage extends BasePageDecorator {
 	
 	public void initEvents()
 	{
-		m_btnLeft.setOnClickListener(new View.OnClickListener() {
+		m_layLeft.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -62,7 +66,7 @@ public class HeaderPage extends BasePageDecorator {
 			}
 		});
 		
-		m_btnRight.setOnClickListener(new View.OnClickListener() {
+		m_layRight.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -74,7 +78,7 @@ public class HeaderPage extends BasePageDecorator {
 			
 			@Override
 			public void onClick(View arg0) {
-				m_btnLeft.performClick();	
+				m_layLeft.performClick();	
 			}
 		});		
 	}
@@ -100,16 +104,29 @@ public class HeaderPage extends BasePageDecorator {
 	public void setButtonVisible(int side, int visibility)
 	{
 		if( side == 0 )
-			m_btnLeft.setVisibility(visibility);
+			m_layLeft.setVisibility(visibility);
 		if( side == 1 )
-			m_btnRight.setVisibility(visibility);		
+			m_layRight.setVisibility(visibility);		
 	}
 	
 	public void setButtonEvents(int side, View.OnClickListener listener)
 	{
 		if( side == 0 )
-			m_btnLeft.setOnClickListener(listener);
+			m_layLeft.setOnClickListener(listener);
 		if( side == 1 )
-			m_btnRight.setOnClickListener(listener);	
+			m_layRight.setOnClickListener(listener);
+	}
+	
+	public void setTitle(String text)
+	{
+		m_txtPageTitle.setText(text);
+	}
+	
+	public Button getNavigateButton(int side)
+	{
+		if( side == 0 )
+			return m_btnLeft;
+		else
+			return m_btnRight;
 	}
 }
