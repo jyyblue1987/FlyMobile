@@ -80,6 +80,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import common.design.utils.ResourceUtils;
 
 public class ScreenAV extends BaseScreen{
 	private static final String TAG = ScreenAV.class.getCanonicalName();
@@ -777,6 +778,8 @@ public class ScreenAV extends BaseScreen{
 		final ImageButton btPick = (ImageButton)mViewTrying.findViewById(R.id.view_call_trying_imageButton_pick);
 		final ImageButton btHang = (ImageButton)mViewTrying.findViewById(R.id.view_call_trying_imageButton_hang);
 		final ImageView ivAvatar = (ImageView)mViewTrying.findViewById(R.id.view_call_trying_imageView_avatar);
+		ResourceUtils.addClickEffect(btPick);
+		ResourceUtils.addClickEffect(btHang);
 		btPick.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
