@@ -49,6 +49,7 @@ import org.doubango.ngn.utils.NgnUriUtils;
 import com.sip.flymobile.Const;
 import com.sip.flymobile.FlyMobileApplication;
 import com.sip.flymobile.R;
+import com.sip.flymobile.data.DBManager;
 import com.sip.flymobile.pages.MainActivity;
 import com.umeng.analytics.MobclickAgent;
 
@@ -57,6 +58,7 @@ import android.app.KeyguardManager;
 import android.app.KeyguardManager.KeyguardLock;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -81,6 +83,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import common.design.utils.ResourceUtils;
+import common.library.utils.MessageUtils;
+import common.library.utils.MessageUtils.OnButtonClickListener;
 
 public class ScreenAV extends BaseScreen{
 	private static final String TAG = ScreenAV.class.getCanonicalName();
@@ -143,6 +147,8 @@ public class ScreenAV extends BaseScreen{
 		ViewProxSensor,
 		ViewTermwait
 	}
+	
+	private int	m_Direction = 0;
 	
 	public ScreenAV() {
 		super(SCREEN_TYPE.AV_T, TAG);
@@ -653,39 +659,32 @@ public class ScreenAV extends BaseScreen{
 	
 		                case REMOTE_TRANSFER_REQUESTED:
 		                    {
-//		                    	String referToUri = intent.getStringExtra(NgnInviteEventArgs.EXTRA_REFERTO_URI);
-//		                    	if (!NgnStringUtils.isNullOrEmpty(referToUri)) {
-//		                    		String referToName = NgnUriUtils.getDisplayName(referToUri);
-//		                    		if (!NgnStringUtils.isNullOrEmpty(referToName)) {
-//		                    			mTransferDialog = CustomDialog.create(
-//		        								ScreenAV.this,
-//		        								R.drawable.exit_48,
-//		        								null,
-//		        								"Call Transfer to " + referToName + " requested. Do you accept?",
-//		        								"Yes",
-//		        								new DialogInterface.OnClickListener() {
-//		        									@Override
-//		        									public void onClick(DialogInterface dialog, int which) {
-//		        										dialog.cancel();
-//		        										mTransferDialog = null;
-//		        										if (mAVSession != null) {
-//		        											mAVSession.acceptCallTransfer();
-//		        										}
-//		        									}
-//		        								}, "No",
-//		        								new DialogInterface.OnClickListener() {
-//		        									@Override
-//		        									public void onClick(DialogInterface dialog, int which) {
-//		        										dialog.cancel();
-//		        										mTransferDialog = null;
-//		        										if (mAVSession != null) {
-//		        											mAVSession.rejectCallTransfer();
-//		        										}
-//		        									}
-//		        								});
-//		                    			mTransferDialog.show();
-//		                    		}
-//		                    	}
+		                    	String referToUri = intent.getStringExtra(NgnInviteEventArgs.EXTRA_REFERTO_URI);
+		                    	if (!NgnStringUtils.isNullOrEmpty(referToUri)) {
+		                    		String referToName = NgnUriUtils.getDisplayName(referToUri);
+		                    		if (!NgnStringUtils.isNullOrEmpty(referToName)) {
+		                    			MessageUtils.showDialogYesNo(ScreenAV.this, "Call Transfer to " + referToName + " requested. Do you accept?", new OnButtonClickListener() {
+											
+											@Override
+											public void onOkClick() {
+												mTransferDialog = null;
+        										if (mAVSession != null) {
+        											mAVSession.acceptCallTransfer();
+        										}
+												
+											}
+											
+											@Override
+											public void onCancelClick() {
+												mTransferDialog = null;
+        										if (mAVSession != null) {
+        											mAVSession.rejectCallTransfer();
+        										}
+												
+											}
+										});		                    		
+		                    		}
+		                    	}
 		                        break;
 		                    }
 		               

@@ -26,6 +26,9 @@ public class Const {
 	public static final String AVASTAR = "avastar";
 	public static final String REALNAME = "name";
 	
+	// Call history table
+	public static final String STATE = "state";
+	
 	// Chat history table
 	public static final String ID = "id";
 	public static final String FROM = "from_id";
@@ -41,4 +44,5 @@ public class Const {
 	public static final String SENDER = "sender"; // only valid in group chatting
 	public static final String SMS_CHAT = "sms_chat";
 
+	public static final String TAG = "tag";
 }

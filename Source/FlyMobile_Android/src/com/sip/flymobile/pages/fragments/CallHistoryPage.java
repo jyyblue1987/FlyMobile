@@ -1,8 +1,16 @@
 package com.sip.flymobile.pages.fragments;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.imsdroid.Utils.DateTimeUtils;
+import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.model.NgnHistoryAVCallEvent.HistoryEventAVFilter;
+import org.doubango.ngn.model.NgnHistoryEvent;
+import org.doubango.ngn.services.INgnHistoryService;
+import org.doubango.ngn.utils.NgnUriUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,25 +18,24 @@ import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
-import com.sip.flymobile.pages.ChatViewActivity;
 import com.sip.flymobile.pages.HeaderPage;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.MyListAdapter;
 import common.list.adapter.ViewHolder;
-import common.manager.activity.ActivityManager;
 
 
 public class CallHistoryPage extends BasePageDecorator {
@@ -36,13 +43,17 @@ public class CallHistoryPage extends BasePageDecorator {
 	MyListAdapter	m_adapterCallList = null;
 	
 	boolean 	m_bEditMode = false;
+	private final INgnHistoryService mHistorytService;
+	
 	public CallHistoryPage(BaseView view)
 	{
 		super(view);
+		mHistorytService = Engine.getInstance().getHistoryService();		
 	}
 	public void findViews()
 	{
 		super.findViews();
+		
 		m_listItems = (ListView)getContext().findViewById(R.id.list_items);
 	}
 		
@@ -69,28 +80,48 @@ public class CallHistoryPage extends BasePageDecorator {
 		HeaderPage header = (HeaderPage) decorator;
 		header.setTitle("Recent/Call log");
 		
-		
-		List<JSONObject> list = new ArrayList<JSONObject>();
-		for(int i = 0; i < 20; i++)
-		{
-			JSONObject item = new JSONObject();
-			try {
-				item.put(Const.ID, i);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			list.add(item);
-		}
-		
 		m_bEditMode = false;
 		
 		changeNavigateButton();
+		
+		initCallHistory();
+	}
+	
+	private void initCallHistory()
+	{
+		List<NgnHistoryEvent> events = mHistorytService.getObservableEvents().filter(new HistoryEventAVFilter());
+		
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		for(int i = 0; i < events.size(); i++ )
+		{
+			NgnHistoryEvent event = events.get(i);
+			NgnMediaType type = event.getMediaType();
+			if( type != NgnMediaType.Audio && type != NgnMediaType.AudioVideo )
+				continue;
+			
+			String date = DateTimeUtils.getFriendlyDateString(new Date(event.getStartTime()));
+			String remoteParty = NgnUriUtils.getDisplayName(event.getRemoteParty());
+			String phoneNumber = NgnUriUtils.getValidPhoneNumber(remoteParty);
+			
+			JSONObject data = new JSONObject();
+			
+			try {
+				data.put(Const.TO, remoteParty);
+				data.put(Const.USERNAME, phoneNumber);
+				data.put(Const.DATE, date);
+				data.put(Const.STATE, event.getStatus());
+				data.put(Const.TAG, event);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}		
+			
+			list.add(data);			
+		}
 		
 		m_adapterCallList = new CallListAdapter(getContext(), list, R.layout.fragment_list_call_history_item, null);
 		
 		m_listItems.setAdapter(m_adapterCallList);
 	}
-	
 	public void initEvents()
 	{
 		super.initEvents();
@@ -142,6 +173,14 @@ public class CallHistoryPage extends BasePageDecorator {
 		}
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(mHistorytService.isLoading()){
+			Toast.makeText(getContext(), "Loading history...", Toast.LENGTH_SHORT).show();
+		}
+	}
 	
 	class CallListAdapter extends MyListAdapter {
 		public CallListAdapter(Context context, List<JSONObject> data,
@@ -172,11 +211,28 @@ public class CallHistoryPage extends BasePageDecorator {
 			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.img_call_icon), 60, 0, 60, 0, true);
 			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_icon), 60, 60, true);
 			
+			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(item.optString(Const.TO, ""));
+			((TextView)ViewHolder.get(rowView, R.id.txt_call_time)).setText(item.optString(Const.DATE, ""));
+			
 			if( m_bEditMode == true )
 				ViewHolder.get(rowView, R.id.lay_edit_call).setVisibility(View.VISIBLE);
 			else
 				ViewHolder.get(rowView, R.id.lay_edit_call).setVisibility(View.GONE);
 			
+			NgnHistoryEvent event = (NgnHistoryEvent)item.opt(Const.TAG);
+			
+			switch(event.getStatus()){
+				case Outgoing:
+					((ImageView)ViewHolder.get(rowView, R.id.img_call_state)).setImageResource(R.drawable.call_state1);
+					break;
+				case Incoming:
+					((ImageView)ViewHolder.get(rowView, R.id.img_call_state)).setImageResource(R.drawable.call_state2);
+					break;
+				case Failed:
+				case Missed:
+					((ImageView)ViewHolder.get(rowView, R.id.img_call_state)).setImageResource(R.drawable.call_state3);
+					break;
+			}
 			ViewHolder.get(rowView, R.id.lay_edit_call).setOnClickListener(new View.OnClickListener() {
 				
 				@Override
@@ -201,7 +257,6 @@ public class CallHistoryPage extends BasePageDecorator {
 			});
 		}	
 	}
-	
 
 	
 }

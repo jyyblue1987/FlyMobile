@@ -1,11 +1,12 @@
 package com.sip.flymobile.pages.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.doubango.imsdroid.Engine;
-import org.doubango.imsdroid.Services.IScreenService;
-import org.json.JSONException;
+import org.doubango.imsdroid.Screens.ScreenAV;
+import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.utils.NgnStringUtils;
 import org.json.JSONObject;
 
 import com.sip.flymobile.Const;
@@ -19,11 +20,14 @@ import com.sip.flymobile.pages.HeaderPage;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,13 +35,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
 import common.design.utils.ResourceUtils;
 import common.library.utils.CheckUtils;
+import common.library.utils.MessageUtils;
 import common.list.adapter.ItemCallBack;
-import common.list.adapter.ItemResult;
 import common.list.adapter.MyListAdapter;
 import common.list.adapter.ViewHolder;
 import common.manager.activity.ActivityManager;
@@ -79,7 +82,7 @@ public class ContactListPage extends BasePageDecorator {
 		btnLeft.setBackgroundColor(Color.TRANSPARENT);
 		
 		Button btnRight = header.getNavigateButton(1);
-		LayoutUtils.setSize(btnRight, 65, 65, true);
+		LayoutUtils.setSize(btnRight, 55, 55, true);
 	}
 	
 	public void layoutSearchbarControls()
@@ -167,9 +170,30 @@ public class ContactListPage extends BasePageDecorator {
 			@Override
 			public void onItemClick(AdapterView<?> arg0,
 					View arg1, int position, long arg3) {
-				
+//				gotoAddContactPage(position);
 			}			
 		});		
+		
+		m_editSearchText.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+				List<JSONObject> list = DBManager.getContactList(getContext(), arg0.toString());
+				m_adapterContactList.setData(list);
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 	
 	private void showSearchBar()
@@ -199,6 +223,25 @@ public class ContactListPage extends BasePageDecorator {
 		
 		ActivityManager.changeActivity(getContext().getParent(), AddContactActivity.class, bundle, false, null );
 	}
+	
+	private void gotoCallingPage(JSONObject item)
+	{
+		String mobile = item.optString(Const.USERNAME, ""); 
+		INgnSipService mSipService = Engine.getInstance().getSipService();
+		if(mSipService.isRegistered() && !NgnStringUtils.isNullOrEmpty(mobile))
+			ScreenAV.makeCall(mobile, NgnMediaType.Audio);
+		else
+			MessageUtils.showMessageDialog(getContext().getParent(), "Not connect to SIP service");
+	}
+	
+	private void gotoSMSPage(JSONObject item)
+	{
+		Bundle bundle = new Bundle();				
+		
+		bundle.putString(INTENT_EXTRA, item.toString());
+		ActivityManager.changeActivity(getContext().getParent(), ChatViewActivity.class, bundle, false, null );
+	}
+	
 	class ContactListAdapter extends MyListAdapter implements SectionIndexer{
 		public ContactListAdapter(Context context, List<JSONObject> data,
 				int resource, ItemCallBack callback) {
@@ -293,7 +336,7 @@ public class ContactListPage extends BasePageDecorator {
 				
 				@Override
 				public void onClick(View v) {
-//					gotoCallingPage(item);
+					gotoCallingPage(item);
 				}
 			});
 			
@@ -301,7 +344,7 @@ public class ContactListPage extends BasePageDecorator {
 				
 				@Override
 				public void onClick(View v) {
-//					gotoSMSPage(item);
+					gotoSMSPage(item);
 				}
 			});
 			

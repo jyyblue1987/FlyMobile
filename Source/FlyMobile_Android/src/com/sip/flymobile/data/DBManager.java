@@ -3,6 +3,9 @@ package com.sip.flymobile.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.ngn.services.INgnConfigurationService;
+import org.doubango.ngn.utils.NgnConfigurationEntry;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +15,7 @@ import android.content.Context;
 import android.database.Cursor;
 import common.library.utils.CheckUtils;
 import common.library.utils.FileUtils;
+import common.library.utils.MyTime;
 
 public class DBManager {
 	private static final String DATABASE_NAME = "flymobile.db";
@@ -120,7 +124,7 @@ public class DBManager {
 		{
 			search = "%" + search + "%";
 			whereClause += " and (name LIKE ? or username LIKE ?)";
-			String [] args = { search, search, search };
+			String [] args = { search, search };
 			whereArgs = args;
 		}
 		
@@ -133,6 +137,66 @@ public class DBManager {
 		return list;
 	}
 	
+	public static long addCallHistory(Context context, String mobile, int state)
+	{
+		if( context == null )
+			return -1;
+		
+		INgnConfigurationService mConfigurationService = Engine.getInstance().getConfigurationService();
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		
+		JSONObject data = new JSONObject();
+		
+		try {
+			data.put(Const.FROM, sipNumber);
+			data.put(Const.TO, mobile);
+			data.put(Const.STATE, state);
+			data.put(Const.DATE, MyTime.getCurrentTime());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+						
+		return addRecord(context, CALLHISTORY_TABLE, data);
+	}
+	
+	public static List<JSONObject> getCallHistory(Context context, String mobile, String search)
+	{
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		if( context == null )
+			return list;
+		
+		DatabaseManager db = new DatabaseManager(context);
+		if( db.OpenDatabase(DATABASE_NAME) == false )
+			return list;
+		
+		Cursor	cursor = null;		
+		
+		String whereClause = "from_id = ?";
+		String []whereArgs = null;
+	
+		if( CheckUtils.isEmpty(search) == false )
+		{
+			search = "%" + search + "%";
+			whereClause += " and (to_id LIKE ? or name LIKE ?) ";
+			String [] args = {mobile, search, search};
+			whereArgs = args;
+		}
+		else
+		{	
+			String [] args = {mobile};
+			whereArgs = args;			
+		}
+		
+		
+		String column [] = { Const.TO + " as username", "*", "count(*) as count" };
+		cursor = db.searchRecord(CHATHISTORY_TABLE, column, whereClause, whereArgs, Const.TO, "id DESC", null);
+		
+		list = db.getRecordData(cursor);
+		
+		db.CloseDatabase();
+		
+		return list;		
+	}
 	
 	
 	public static long addChat(Context context, JSONObject data)
@@ -143,6 +207,7 @@ public class DBManager {
 		
 		return addRecord(context, CHATHISTORY_TABLE, data);
 	}
+	
 	public static List<JSONObject> getIndividualChatHistory(Context context, String from, String to, int type, int id, int count)
 	{
 		List<JSONObject> list = new ArrayList<JSONObject>();

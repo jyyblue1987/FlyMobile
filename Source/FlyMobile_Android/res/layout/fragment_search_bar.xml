@@ -39,7 +39,7 @@
 	        android:id="@+id/img_search_icon"
 	        android:layout_width="30dip"
 	        android:layout_height="30dip"
-	        android:src="@drawable/search" 
+	        android:background="@drawable/search" 
 	        />
 	    <EditText
 	        android:id="@+id/edit_search"
@@ -54,7 +54,7 @@
 	        android:id="@+id/img_del_search"
 	        android:layout_width="25dip"
 	        android:layout_height="25dip"
-	        android:src="@drawable/delete" 
+	        android:background="@drawable/delete" 
 	        />
 	</LinearLayout>	
 

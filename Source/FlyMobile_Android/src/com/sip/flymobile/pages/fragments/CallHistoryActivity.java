@@ -7,6 +7,7 @@ import com.sip.flymobile.pages.HeaderPage;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class CallHistoryActivity extends Activity {
 	BaseView	m_view = null;
@@ -35,6 +36,12 @@ public class CallHistoryActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		m_view.onPause();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		m_view.onDestroy();
+       super.onDestroy();
 	}
 
 }

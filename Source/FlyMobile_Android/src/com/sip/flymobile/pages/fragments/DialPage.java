@@ -29,6 +29,7 @@ import android.widget.TextView;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
 import common.design.utils.ResourceUtils;
+import common.library.utils.MessageUtils;
 
 
 public class DialPage extends BasePageDecorator {
@@ -136,8 +137,6 @@ public class DialPage extends BasePageDecorator {
 	{
 		super.initData();
 
-		INgnConfigurationService mConfigurationService = Engine.getInstance().getConfigurationService();
-		
 		m_editDialNumber.setText("");
 		m_nSelContactNum = 0;
 		
@@ -154,6 +153,7 @@ public class DialPage extends BasePageDecorator {
 		DialerUtils.setDialerTextButton(getContext(), R.id.screen_tab_dialer_button_star, "*", "", DialerUtils.TAG_STAR, mOnDialerClick);
 		DialerUtils.setDialerTextButton(getContext(), R.id.screen_tab_dialer_button_sharp, "#", "", DialerUtils.TAG_SHARP, mOnDialerClick);
 
+		INgnConfigurationService mConfigurationService = Engine.getInstance().getConfigurationService();
 		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
 		m_txtMobile.setText(sipNumber);
 	}
@@ -300,8 +300,11 @@ public class DialPage extends BasePageDecorator {
 		INgnSipService mSipService = Engine.getInstance().getSipService();
 		if(mSipService.isRegistered() && !NgnStringUtils.isNullOrEmpty(phoneNumber)){
 			ScreenAV.makeCall(phoneNumber, NgnMediaType.Audio);
-//			m_editDialNumber.setText(NgnStringUtils.emptyValue());
+			m_editDialNumber.setText(NgnStringUtils.emptyValue());
 		}
+		else
+			MessageUtils.showMessageDialog(getContext().getParent(), "Not connect to SIP service");
+			
 		return true;
 	}
 }
