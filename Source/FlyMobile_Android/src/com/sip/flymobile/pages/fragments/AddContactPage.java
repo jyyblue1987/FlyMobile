@@ -1,6 +1,13 @@
 package com.sip.flymobile.pages.fragments;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.imsdroid.Services.IScreenService;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
+import com.sip.flymobile.data.DBManager;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
 import com.sip.flymobile.pages.HeaderPage;
@@ -18,6 +25,8 @@ public class AddContactPage extends BasePageDecorator {
 	EditText m_editName = null;
 	EditText m_editMobile = null;
 	Button		m_btnAddContact = null;
+	
+	IScreenService mScreenService = null;
 	public AddContactPage(BaseView view)
 	{
 		super(view);
@@ -25,6 +34,8 @@ public class AddContactPage extends BasePageDecorator {
 	public void findViews()
 	{
 		super.findViews();
+		
+		mScreenService = ((Engine)Engine.getInstance()).getScreenService();
 		
 		m_editName = (EditText) getContext().findViewById(R.id.edit_contact_name);
 		m_editMobile = (EditText) getContext().findViewById(R.id.edit_mobile);
@@ -40,19 +51,19 @@ public class AddContactPage extends BasePageDecorator {
 		
 		LayoutUtils.setMargin(getContext().findViewById(R.id.lay_name), 63, 135, 63, 0, true);
 		LayoutUtils.setSize(getContext().findViewById(R.id.img_contact_icon), 160, 160, true);
-		LayoutUtils.setMargin(m_editName, 20, 0, 0, 0, true);
+		LayoutUtils.setMargin(m_editName, 50, 0, 0, 0, true);
 		m_editName.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(56));
 		
 		LayoutUtils.setMargin(getContext().findViewById(R.id.lay_divider_line), 45, 36, 45, 0, true);
 		
 		LayoutUtils.setMargin(getContext().findViewById(R.id.lay_mobile), 63, 60, 63, 0, true);
 		LayoutUtils.setSize(getContext().findViewById(R.id.img_call_icon), 130, 130, true);
-		LayoutUtils.setMargin(m_editMobile, 20, 0, 0, 0, true);
+		LayoutUtils.setMargin(m_editMobile, 80, 0, 0, 0, true);
 		m_editMobile.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(56));
 		
 		LayoutUtils.setMargin(m_btnAddContact, 0, 300, 0, 0, true);
 		LayoutUtils.setSize(m_btnAddContact, 542, 136, true);
-		m_btnAddContact.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(42));
+		m_btnAddContact.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(56));
 	}
 	
 	private void changeNavigateButton()
@@ -78,9 +89,36 @@ public class AddContactPage extends BasePageDecorator {
 			
 			@Override
 			public void onClick(View v) {
-				
+				addContact();
+			}
+		});
+		
+		HeaderPage header = (HeaderPage) decorator;
+		header.setButtonEvents(0, new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finishView();
 			}
 		});
 	}
 		
+	private void addContact()
+	{
+		String name = m_editName.getText().toString();
+		String mobile = m_editMobile.getText().toString();
+		
+		JSONObject data = new JSONObject();
+		
+		try {
+			data.put(Const.USERNAME, mobile);
+			data.put(Const.REALNAME, name);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		DBManager.addContact(getContext(), data);
+		
+		finishView();
+	}
 }

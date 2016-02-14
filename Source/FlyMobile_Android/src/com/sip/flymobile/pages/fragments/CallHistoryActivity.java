@@ -18,7 +18,7 @@ public class CallHistoryActivity extends Activity {
 		
 		m_view = new CallHistoryPage(new HeaderPage(new BasePage()));
 		
-		m_view.setContext(this);
+		m_view.setContext(this, false);
 		m_view.findViews();
 		m_view.layoutControls();
 		m_view.initData();

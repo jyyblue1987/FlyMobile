@@ -249,7 +249,7 @@ public class ChatViewPage extends BasePageDecorator implements ChatView {
 			
 			@Override
 			public void onClick(View arg0) {
-					
+				finishView();	
 			}
 		});
 		

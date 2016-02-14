@@ -25,7 +25,7 @@ public class AddContactActivity extends BaseScreen {
 		
 		m_view = new AddContactPage(new HeaderPage(new BasePage()));
 		
-		m_view.setContext(this);
+		m_view.setContext(this, true);
 		m_view.findViews();
 		m_view.layoutControls();
 		m_view.initData();

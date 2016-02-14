@@ -20,7 +20,7 @@ public class DialActivity extends Activity {
 		
 		m_view = new DialPage(new HeaderPage(new BasePage()));
 		
-		m_view.setContext(this);
+		m_view.setContext(this, false);
 		m_view.findViews();
 		m_view.layoutControls();
 		m_view.initData();

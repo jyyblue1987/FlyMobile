@@ -11,8 +11,8 @@ public class BasePageDecorator implements BaseView {
 	}
 	
 	@Override
-	public void setContext(Activity context) {
-		decorator.setContext(context);		
+	public void setContext(Activity context, boolean push) {
+		decorator.setContext(context, push);		
 	}
 	
 	@Override

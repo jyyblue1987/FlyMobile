@@ -6,10 +6,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.sip.flymobile.Const;
-import com.sip.flymobile.data.table.ContactList;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -39,26 +36,104 @@ public class DBManager {
 	{
 		m_context = context;
 		
-//		DatabaseManager db = new DatabaseManager(context);
-//		String path = db.getDatabaseFullPath(DATABASE_NAME);
-//		FileUtils.copyAssetFileToSDCard(context, "data/PhoneBook_Structure.db", path);
+		DatabaseManager db = new DatabaseManager(context);
+		String path = db.getDatabaseFullPath(DATABASE_NAME);
+		FileUtils.copyAssetFileToSDCard(context, "data/flymobile.db", path);
 		
 	}
 	
-	public static void addContact(Context context, String name, String mobile)
+	public static long addContact(Context context, JSONObject data)
 	{
-		OrmDatabaseHelper helper = OrmDatabaseHelper.getHelper(context);
+		if( context == null || data == null )
+			return -1;
 		
-		RuntimeExceptionDao<ContactList, Integer> contactListDao = helper.getContactListDao();
-		ContactList contact = new ContactList();
+		long ret = -1;
+		if( isExistContact(context, data) == true )
+		{
+			String username = data.optString(Const.USERNAME, "");
+			int group_type = data.optInt(Const.GROUP_TYPE, 0);
+			
+			String whereClause = "username = ? and group_type = ?";
+			String [] whereArgs = { username, group_type + ""};
+			ret = updateRecord(context, CONTACTLIST_TABLE, data, whereClause, whereArgs);
+		}
+		else
+		{
+			ret = addRecord(context, CONTACTLIST_TABLE, data);	
+		}
 		
-		contact.name = name;
-		contact.username = mobile;
-		
-		contactListDao.create(contact);
-		
-		helper.close();		
+		return ret;
 	}
+
+	public static boolean isExistContact(Context context, JSONObject data)
+	{
+		if( context == null || data == null )
+			return false;
+		
+		DatabaseManager db = new DatabaseManager(context);
+		if( db.OpenDatabase(DATABASE_NAME) == false )
+			return false;
+				
+		String username = data.optString(Const.USERNAME, "");
+		int group_type = data.optInt(Const.GROUP_TYPE, 0);
+		if( CheckUtils.isEmpty(username) )
+		{
+			db.CloseDatabase();
+			return false;
+		}
+	
+		String whereClause = "username = ? and group_type = ?";
+		String []whereArgs = {username, group_type + ""};
+			
+		Cursor	cursor = db.searchRecord(CONTACTLIST_TABLE, null, whereClause, whereArgs, null, null);
+		
+		List<JSONObject> list =  db.getRecordData(cursor);
+	
+		if( list == null || list.size() < 1 )
+		{
+			db.CloseDatabase();
+			return false;			
+		}
+		
+		db.CloseDatabase();
+
+		return true;
+	}
+	
+	public static List<JSONObject> getContactList(Context context, String search)
+	{
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		if( context == null )
+			return list;
+		
+		DatabaseManager db = new DatabaseManager(context);
+		if( db.OpenDatabase(DATABASE_NAME) == false )
+			return list;
+		
+		Cursor	cursor = null;		
+		
+		String orderBy = "name COLLATE NOCASE ASC";
+		String whereClause = "group_type = '0'";
+		String []whereArgs = null;
+		
+		if( CheckUtils.isEmpty(search) == false )
+		{
+			search = "%" + search + "%";
+			whereClause += " and (name LIKE ? or username LIKE ?)";
+			String [] args = { search, search, search };
+			whereArgs = args;
+		}
+		
+		cursor = db.searchRecord(CONTACTLIST_TABLE, null, whereClause, whereArgs, orderBy, null);
+		
+		list = db.getRecordData(cursor);
+					
+		db.CloseDatabase();
+		
+		return list;
+	}
+	
+	
 	
 	public static long addChat(Context context, JSONObject data)
 	{

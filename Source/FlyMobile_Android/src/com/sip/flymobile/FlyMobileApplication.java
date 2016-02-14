@@ -8,6 +8,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.sip.flymobile.data.DBManager;
 import com.umeng.analytics.MobclickAgent;
 
 import android.content.Context;
@@ -40,7 +41,8 @@ public class FlyMobileApplication extends NgnApplication {
 	   {
 		   DataUtils.setContext(this);
 		   NetworkUtils.setContext(this);
-		   MessageUtils.setApplicationContext(this);		   
+		   MessageUtils.setApplicationContext(this);		
+		   DBManager.loadDB(this);
 	   }
 	   
 	   private void initImageLoader(Context context) {

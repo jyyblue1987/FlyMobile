@@ -10,16 +10,20 @@ import org.json.JSONObject;
 
 import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
+import com.sip.flymobile.data.DBManager;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.pages.ChatViewActivity;
 import com.sip.flymobile.pages.HeaderPage;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,13 +31,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
 import common.design.utils.ResourceUtils;
 import common.library.utils.CheckUtils;
 import common.list.adapter.ItemCallBack;
+import common.list.adapter.ItemResult;
 import common.list.adapter.MyListAdapter;
 import common.list.adapter.ViewHolder;
+import common.manager.activity.ActivityManager;
 
 
 public class ContactListPage extends BasePageDecorator {
@@ -107,22 +114,10 @@ public class ContactListPage extends BasePageDecorator {
 	{
 		super.initData();
 		
-		List<JSONObject> list = new ArrayList<JSONObject>();
-		for(int i = 0; i < 20; i++)
-		{
-			JSONObject item = new JSONObject();
-			try {
-				item.put(Const.ID, i);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			list.add(item);
-		}
-		
-		
 		changeNavigateButton();		
 		showHeaderBar();
-		
+
+		List<JSONObject> list = DBManager.getContactList(getContext(), "");
 		m_adapterContactList = new ContactListAdapter(getContext(), list, R.layout.fragment_contact_list_item, null);
 		
 		m_listItems.setAdapter(m_adapterContactList);
@@ -138,7 +133,7 @@ public class ContactListPage extends BasePageDecorator {
 			
 			@Override
 			public void onClick(View v) {
-				gotoAddContactPage();
+				gotoAddContactPage(-1);
 			}
 		});
 		
@@ -167,6 +162,14 @@ public class ContactListPage extends BasePageDecorator {
 			}
 		});
 		
+		m_listItems.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0,
+					View arg1, int position, long arg3) {
+				
+			}			
+		});		
 	}
 	
 	private void showSearchBar()
@@ -181,10 +184,20 @@ public class ContactListPage extends BasePageDecorator {
 		getContext().findViewById(R.id.search_bar).setVisibility(View.GONE);		
 	}
 	
-	private void gotoAddContactPage()
+	private void gotoAddContactPage(int pos)
 	{
-		IScreenService screenService = ((Engine)Engine.getInstance()).getScreenService();
-		screenService.show(AddContactActivity.class);
+		Bundle bundle = new Bundle();				
+	
+		if( pos >= 0 )
+		{
+			JSONObject data = m_adapterContactList.getData().get(pos);
+			bundle.putString(INTENT_EXTRA, data.toString());
+		}
+		else
+			bundle.putString(INTENT_EXTRA, "");
+			
+		
+		ActivityManager.changeActivity(getContext().getParent(), AddContactActivity.class, bundle, false, null );
 	}
 	class ContactListAdapter extends MyListAdapter implements SectionIndexer{
 		public ContactListAdapter(Context context, List<JSONObject> data,
@@ -214,10 +227,10 @@ public class ContactListPage extends BasePageDecorator {
 			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.img_call_icon), 60, 0, 60, 0, true);
 			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_icon), 60, 60, true);
 
-			String pName = item.optString("pname", "Alias");
+			String pName = item.optString(Const.REALNAME, "Alias");
 			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(pName);
 			
-			String mobile = item.optString("mobile", "");
+			String mobile = item.optString(Const.USERNAME, "");
 			((TextView)ViewHolder.get(rowView, R.id.txt_mobile)).setText(mobile);
 
 			LinearLayout header = (LinearLayout) ViewHolder.get(rowView, R.id.section);

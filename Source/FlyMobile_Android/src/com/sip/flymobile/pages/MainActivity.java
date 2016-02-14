@@ -28,7 +28,7 @@ public class MainActivity extends BaseTabScreen {
 		
 		m_view = new MainPage(new BasePage());
 		
-		m_view.setContext(this);
+		m_view.setContext(this, false);
 		m_view.findViews();
 		m_view.layoutControls();
 		m_view.initData();

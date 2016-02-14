@@ -17,7 +17,7 @@ public class ChatViewActivity extends Activity {
 		
 		m_view = new ChatViewPage(new BasePage());
 		
-		m_view.setContext(this);
+		m_view.setContext(this, true);
 		m_view.findViews();
 		m_view.layoutControls();
 		m_view.initData();

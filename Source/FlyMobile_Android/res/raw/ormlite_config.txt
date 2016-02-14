@@ -1,9 +1,9 @@
 #
-# generated on 2016/02/14 12:39:47
+# generated on 2016/02/14 09:02:40
 #
 # --table-start--
 dataClass=com.sip.flymobile.data.table.ContactList
-tableName=contactlist
+tableName=ContactList
 # --table-fields-start--
 # --field-start--
 fieldName=id

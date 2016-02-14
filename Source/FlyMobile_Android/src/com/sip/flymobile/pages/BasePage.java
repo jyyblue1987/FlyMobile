@@ -36,9 +36,11 @@ public class BasePage implements BaseView {
 
 	}
 	
-	public void setContext(Activity context) {
+	public void setContext(Activity context, boolean push) {
 		this.context = context;
-//		ActivityManager.getInstance().pushActivity(context);
+		
+		if( push == true )
+			ActivityManager.getInstance().pushActivity(context);
 		
 		try {
 			mPageName = context.getClass().getSimpleName();

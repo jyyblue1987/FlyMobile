@@ -5,7 +5,7 @@ import android.app.Activity;
 public interface BaseView {
 	public static final String INTENT_EXTRA = "intent_extra";
 	
-	public void setContext(Activity context);
+	public void setContext(Activity context, boolean push);
 	public Activity getContext();
 	public void findViews();
 	public void layoutControls();
