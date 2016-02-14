@@ -1,0 +1,50 @@
+#
+# generated on 2016/02/14 12:39:47
+#
+# --table-start--
+dataClass=com.sip.flymobile.data.table.ContactList
+tableName=contactlist
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=username
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=nickname
+# --field-end--
+# --field-start--
+fieldName=email
+# --field-end--
+# --field-start--
+fieldName=avastar
+# --field-end--
+# --field-start--
+fieldName=favorite
+# --field-end--
+# --field-start--
+fieldName=group_type
+# --field-end--
+# --field-start--
+fieldName=creator
+# --field-end--
+# --field-start--
+fieldName=domain
+# --field-end--
+# --field-start--
+fieldName=address
+# --field-end--
+# --field-start--
+fieldName=postal
+# --field-end--
+# --field-start--
+fieldName=company
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

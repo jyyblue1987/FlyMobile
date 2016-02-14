@@ -6,7 +6,10 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.sip.flymobile.Const;
+import com.sip.flymobile.data.table.ContactList;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -36,10 +39,25 @@ public class DBManager {
 	{
 		m_context = context;
 		
-		DatabaseManager db = new DatabaseManager(context);
-		String path = db.getDatabaseFullPath(DATABASE_NAME);
-		FileUtils.copyAssetFileToSDCard(context, "data/PhoneBook_Structure.db", path);
-
+//		DatabaseManager db = new DatabaseManager(context);
+//		String path = db.getDatabaseFullPath(DATABASE_NAME);
+//		FileUtils.copyAssetFileToSDCard(context, "data/PhoneBook_Structure.db", path);
+		
+	}
+	
+	public static void addContact(Context context, String name, String mobile)
+	{
+		OrmDatabaseHelper helper = OrmDatabaseHelper.getHelper(context);
+		
+		RuntimeExceptionDao<ContactList, Integer> contactListDao = helper.getContactListDao();
+		ContactList contact = new ContactList();
+		
+		contact.name = name;
+		contact.username = mobile;
+		
+		contactListDao.create(contact);
+		
+		helper.close();		
 	}
 	
 	public static long addChat(Context context, JSONObject data)
