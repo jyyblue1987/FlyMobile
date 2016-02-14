@@ -5,6 +5,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.doubango.imsdroid.Engine;
+import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.model.NgnHistorySMSEvent;
+import org.doubango.ngn.model.NgnHistoryEvent.StatusType;
+import org.doubango.ngn.services.INgnConfigurationService;
+import org.doubango.ngn.services.INgnHistoryService;
+import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.sip.NgnMessagingSession;
+import org.doubango.ngn.utils.NgnConfigurationEntry;
+import org.doubango.ngn.utils.NgnUriUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,21 +24,32 @@ import com.sip.flymobile.data.DBManager;
 import android.content.Context;
 import android.os.Message;
 import android.renderscript.Type;
+import android.util.Log;
 import common.library.utils.BackgroundTaskUtils;
 import common.library.utils.BackgroundTaskUtils.OnTaskProgress;
 import common.library.utils.CheckUtils;
 import common.library.utils.MyTime;
 
 public class InstanceChatPresenter extends ChatPresenter {
+	
+	private INgnHistoryService mHistorytService;
+	private INgnSipService mSipService;
+	INgnConfigurationService mConfigurationService;
+	
 //	Chat m_Chat = null;
 	public InstanceChatPresenter(ChatView view) {
 		super(view);
-		
+	
+		mHistorytService = Engine.getInstance().getHistoryService();
+		mSipService = Engine.getInstance().getSipService();
+		mConfigurationService = Engine.getInstance().getConfigurationService();
 	}
 	
 	public void createChatSession(JSONObject contact)
 	{
 		super.createChatSession(contact);
+		
+		
 		
 //		JSONObject profile = ChatController.loadVCard(m_ToUsername);
 //	
@@ -41,7 +62,7 @@ public class InstanceChatPresenter extends ChatPresenter {
 //			e.printStackTrace();
 //		}
 		
-		m_NickName = contact.optString("pname", "");
+		m_NickName = contact.optString(Const.NICKNAME, "");
 		
 		sendUnsendMessage();
 		
@@ -139,39 +160,36 @@ public class InstanceChatPresenter extends ChatPresenter {
 		if( CheckUtils.isEmpty(message) )
 			return;
 
-//		if( m_Chat == null )
-//			m_Chat = ChatController.createChatSession(m_ToUsername, m_ToDomain);	
+		if(mSipService == null || !mSipService.isRegistered()){
+			return;
+		}
 
 		if( m_bUnSendMessage == true )
 			sendUnsendMessage();
 		
-		int sent = 0;
-		try {
-			JSONObject textMessage = new JSONObject();
-			textMessage.put(Const.TYPE, 0);
-			textMessage.put(Const.BODY, message);
-			
-//			Message newMessage = new Message();
-//			newMessage.setBody(textMessage.toString());
-//			newMessage.setSubject("Text");
-//			newMessage.setType(Type.chat);
-//			
-//			
-//			if( m_Chat != null )
-//			{
-//				m_Chat.sendMessage(newMessage);    
-//				sent = 2;
-//			}			
+		int sent = 2;
+		boolean ret = false;
+		final NgnHistorySMSEvent event = new NgnHistorySMSEvent(m_ToUsername, StatusType.Outgoing);
+		event.setContent(message);
+		
+		final String remotePartyUri = NgnUriUtils.makeValidSipUri(m_ToUsername);
+		final NgnMessagingSession imSession = NgnMessagingSession.createOutgoingSession(mSipService.getSipStack(), 
+				remotePartyUri);
+		if(!(ret = imSession.sendTextMessage(message))){
+			event.setStatus(StatusType.Failed);
+			sent = 0;
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		NgnMessagingSession.releaseSession(imSession);
+		
+		mHistorytService.addEvent(event);
+		
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
 		
 		JSONObject data = new JSONObject();
 		try {
-			data.put(Const.FROM, "");
-			data.put(Const.TO, "");
-			data.put(Const.NICKNAME, m_NickName);
+			data.put(Const.FROM, sipNumber);
+			data.put(Const.TO, m_ToUsername);
+			data.put(Const.NICKNAME, m_ToUsername);
 			data.put(Const.BODY, message);
 			data.put(Const.TYPE, 0);	// text message
 			data.put(Const.UNREAD, 0);  // unread flag
@@ -239,8 +257,8 @@ public class InstanceChatPresenter extends ChatPresenter {
 		try {
 			JSONObject data = new JSONObject(newMessage);
 			
-			String from = "";					
-			String chatUser = "";
+			String from = data.optString(Const.TO, "");					
+			String chatUser = m_ToUsername;
 			
 			int count = DBManager.getUnreadMessageCount(((BaseView)view).getContext(), "", false);
 			

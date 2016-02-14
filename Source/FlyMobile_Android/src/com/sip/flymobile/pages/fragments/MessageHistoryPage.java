@@ -76,6 +76,7 @@ public class MessageHistoryPage extends BasePageDecorator {
 			JSONObject item = new JSONObject();
 			try {
 				item.put(Const.ID, i);
+				item.put(Const.USERNAME, "01548768268");
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

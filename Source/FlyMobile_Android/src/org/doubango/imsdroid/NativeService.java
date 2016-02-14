@@ -32,12 +32,17 @@ import org.doubango.ngn.model.NgnHistoryEvent.StatusType;
 import org.doubango.ngn.model.NgnHistorySMSEvent;
 import org.doubango.ngn.sip.NgnAVSession;
 import org.doubango.ngn.sip.NgnMsrpSession;
+import org.doubango.ngn.utils.NgnConfigurationEntry;
 import org.doubango.ngn.utils.NgnDateTimeUtils;
 import org.doubango.ngn.utils.NgnStringUtils;
 import org.doubango.ngn.utils.NgnUriUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import com.sip.flymobile.Const;
 import com.sip.flymobile.FlyMobileApplication;
 import com.sip.flymobile.R;
+import com.sip.flymobile.data.DBManager;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -46,6 +51,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
+import common.library.utils.CheckUtils;
+import common.library.utils.MyTime;
 
 public class NativeService extends NgnNativeService {
 	private final static String TAG = NativeService.class.getCanonicalName();
@@ -134,6 +141,9 @@ public class NativeService extends NgnNativeService {
 							event.setStartTime(NgnDateTimeUtils.parseDate(dateString).getTime());
 							mEngine.getHistoryService().addEvent(event);
 							mEngine.showSMSNotif(R.drawable.sms_25, "New message");
+							
+							anaylzeMessage(NativeService.this, event.getContent(), remoteParty);
+							
 							break;
 					}
 				}
@@ -296,5 +306,39 @@ public class NativeService extends NgnNativeService {
 			}
 		}
 		super.onDestroy();
+	}
+	
+	private void anaylzeMessage(final Context context, String body, String from)
+	{
+		if( CheckUtils.isEmpty(body) )
+			return;		
+		
+		String to = mEngine.getConfigurationService().getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		
+		JSONObject data = new JSONObject();
+		try {
+			data.put(Const.FROM, to);
+			data.put(Const.TO, from);
+			data.put(Const.BODY, body);
+			data.put(Const.TYPE, 0);	// text message
+			data.put(Const.UNREAD, 1);  // unread flag
+			data.put(Const.SENT, 2);    // delivered
+			data.put(Const.DIRECTION, 0); // incoming
+			data.put(Const.GROUP_TYPE, 0);	// 1:1 chatting
+			data.put(Const.DATE, MyTime.getCurrentTime());	
+			
+			
+			long id = DBManager.addChat(context, data);
+			data.put(Const.ID, id);
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		Intent intent = new Intent(Const.RECEIVE_MESSAGE_ACTION);
+        intent.putExtra(Const.EXTRA_MESSAGE, data.toString());
+        context.sendBroadcast(intent);
+        
+//        addNotification(context, data);
 	}
 }
