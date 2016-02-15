@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sip.flymobile.Const;
+import com.sip.flymobile.FlyMobileUtils;
 import com.sip.flymobile.R;
 import com.sip.flymobile.data.DBManager;
 import com.sip.flymobile.mvp.BasePageDecorator;
@@ -43,6 +44,7 @@ import android.widget.Toast;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
 import common.library.utils.AlgorithmUtils;
+import common.library.utils.CheckUtils;
 import common.library.utils.MessageUtils;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.MyListAdapter;
@@ -120,7 +122,11 @@ public class CallHistoryPage extends BasePageDecorator {
 			try {
 				data.put(Const.ID, i);
 				data.put(Const.REALNAME, remoteParty);
-				data.put(Const.USERNAME, phoneNumber);
+				if( CheckUtils.isNotEmpty(phoneNumber) )
+					data.put(Const.USERNAME, phoneNumber);
+				else
+					data.put(Const.USERNAME, remoteParty);
+					
 				data.put(Const.DATE, date);
 				data.put(Const.STATE, event.getStatus());
 				data.put(Const.TAG, event);
@@ -208,7 +214,7 @@ public class CallHistoryPage extends BasePageDecorator {
 
 	private void gotoDialPage(JSONObject item)
 	{
-		String mobile = item.optString(Const.USERNAME, ""); 
+		String mobile = FlyMobileUtils.getMobieNumber(item); 
 		MainActivity tab = (MainActivity)getContext().getParent();
 		
 		if( tab == null )
