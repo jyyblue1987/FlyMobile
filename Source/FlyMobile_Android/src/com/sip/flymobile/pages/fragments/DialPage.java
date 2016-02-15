@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
 import common.design.utils.ResourceUtils;
@@ -156,10 +157,6 @@ public class DialPage extends BasePageDecorator {
 		DialerUtils.setDialerTextButton(getContext(), R.id.screen_tab_dialer_button_9, "9", "WXYZ", DialerUtils.TAG_9, mOnDialerClick);
 		DialerUtils.setDialerTextButton(getContext(), R.id.screen_tab_dialer_button_star, "*", "", DialerUtils.TAG_STAR, mOnDialerClick);
 		DialerUtils.setDialerTextButton(getContext(), R.id.screen_tab_dialer_button_sharp, "#", "", DialerUtils.TAG_SHARP, mOnDialerClick);
-
-		INgnConfigurationService mConfigurationService = Engine.getInstance().getConfigurationService();
-		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
-		m_txtMobile.setText(sipNumber);
 	}
 	
 	public void initEvents()
@@ -239,7 +236,8 @@ public class DialPage extends BasePageDecorator {
 	      @Override
 	      public void onReceive(Context context, Intent intent) {
 	          String mobile = intent.getExtras().getString(Const.EXTRA_MESSAGE);
-	          m_editDialNumber.setText(mobile);				
+	          m_editDialNumber.setText(mobile);			
+	          m_editDialNumber.setSelection(mobile.length());
 	      }
 	};
 	
@@ -320,6 +318,15 @@ public class DialPage extends BasePageDecorator {
 			MessageUtils.showMessageDialog(getContext().getParent(), "Not connect to SIP service");
 			
 		return true;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		INgnConfigurationService mConfigurationService = Engine.getInstance().getConfigurationService();
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		m_txtMobile.setText(sipNumber);
 	}
 	
 	@Override
