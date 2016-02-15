@@ -13,6 +13,7 @@ import com.sip.flymobile.Const;
 
 import android.content.Context;
 import android.database.Cursor;
+import common.library.utils.AlgorithmUtils;
 import common.library.utils.CheckUtils;
 import common.library.utils.FileUtils;
 import common.library.utils.MyTime;
@@ -68,6 +69,22 @@ public class DBManager {
 		
 		return ret;
 	}
+	
+	public static void deleteContact(String id)
+	{
+		if( CheckUtils.isEmpty(id) )
+			return;
+		
+		DatabaseManager db = new DatabaseManager(m_context);
+		if( db.OpenDatabase(DATABASE_NAME) == false )
+			return;
+
+		String strQuery = "id = '" + id + "'";
+		
+		db.DeleteRecords(CONTACTLIST_TABLE, strQuery);
+
+		db.CloseDatabase();
+	}
 
 	public static boolean isExistContact(Context context, JSONObject data)
 	{
@@ -102,6 +119,34 @@ public class DBManager {
 		db.CloseDatabase();
 
 		return true;
+	}
+	
+	public static JSONObject getContact(Context context, String username, int group_type)
+	{
+		if( context == null )
+			return new JSONObject();
+		
+		DatabaseManager db = new DatabaseManager(context);
+		if( db.OpenDatabase(DATABASE_NAME) == false )
+			return new JSONObject();
+		
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		
+		Cursor	cursor = null;		
+		
+		String whereClause = "username = ? and group_type = ?";
+		String []whereArgs = {username, group_type + ""};
+		
+		cursor = db.searchRecord(CONTACTLIST_TABLE, null, whereClause, whereArgs, null, null);
+		
+		list = db.getRecordData(cursor);
+					
+		db.CloseDatabase();
+		
+		if( list == null || list.size() < 1 )
+			return new JSONObject();
+		
+		return list.get(0);
 	}
 	
 	public static List<JSONObject> getContactList(Context context, String search)
@@ -208,6 +253,57 @@ public class DBManager {
 		return addRecord(context, CHATHISTORY_TABLE, data);
 	}
 	
+	public static List<JSONObject> getChatHistory(Context context, String mobile, String search)
+	{
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		if( context == null )
+			return list;
+		
+		DatabaseManager db = new DatabaseManager(context);
+		if( db.OpenDatabase(DATABASE_NAME) == false )
+			return list;
+		
+		Cursor	cursor = null;		
+		
+		String whereClause = "from_id = ?";
+		String []whereArgs = null;
+	
+		if( CheckUtils.isEmpty(search) == false )
+		{
+			search = "%" + search + "%";
+			whereClause += " and (to_id LIKE ? or name LIKE ?) ";
+			String [] args = {mobile, search, search};
+			whereArgs = args;
+		}
+		else
+		{	
+			String [] args = {mobile};
+			whereArgs = args;			
+		}
+		
+		
+		String column [] = { Const.TO + " as username", "*", "count(*) as count" };
+		cursor = db.searchRecord(CHATHISTORY_TABLE, column, whereClause, whereArgs, Const.TO, "id DESC", null);
+		
+		list = db.getRecordData(cursor);
+		
+		db.CloseDatabase();
+		
+		for(int i = 0; i < list.size(); i++ )
+		{
+			JSONObject data = list.get(i);
+			if( data == null )
+				continue;
+			
+			String id = data.optString(Const.USERNAME, "");
+			int group_type = data.optInt(Const.GROUP_TYPE, 0);
+			JSONObject contact = getContact(context, id, group_type);
+			AlgorithmUtils.bindJSONObject(data, contact);			
+		}
+		
+		return list;		
+	}
+	
 	public static List<JSONObject> getIndividualChatHistory(Context context, String from, String to, int type, int id, int count)
 	{
 		List<JSONObject> list = new ArrayList<JSONObject>();
@@ -238,6 +334,23 @@ public class DBManager {
 		db.CloseDatabase();
 		
 		return list;
+	}
+	
+	public static void deleteChatHistory(Context context, String from, String to)
+	{
+		if( context == null )
+			return;
+
+		DatabaseManager db = new DatabaseManager(context);
+		if( db.OpenDatabase(DATABASE_NAME) == false )
+			return;
+		
+		String whereClause = "from_id = ? and to_id = ?";
+		String []whereArgs = {from, to};
+				
+		db.deleteRecord(CHATHISTORY_TABLE, whereClause, whereArgs);
+
+		db.CloseDatabase();
 	}
 	
 	public static long setFlagReadChatToAll(Context context, String username, int group_type)

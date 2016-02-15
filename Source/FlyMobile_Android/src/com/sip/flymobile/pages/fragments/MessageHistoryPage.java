@@ -3,11 +3,15 @@ package com.sip.flymobile.pages.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.ngn.services.INgnConfigurationService;
+import org.doubango.ngn.utils.NgnConfigurationEntry;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
+import com.sip.flymobile.data.DBManager;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
 import com.sip.flymobile.pages.ChatViewActivity;
@@ -16,10 +20,12 @@ import com.sip.flymobile.pages.HeaderPage;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,9 +42,12 @@ public class MessageHistoryPage extends BasePageDecorator {
 	MyListAdapter	m_adapterMessageList = null;
 	
 	boolean 	m_bEditMode = false;
+	INgnConfigurationService mConfigurationService = null;
+		
 	public MessageHistoryPage(BaseView view)
 	{
 		super(view);
+		mConfigurationService = Engine.getInstance().getConfigurationService();
 	}
 	public void findViews()
 	{
@@ -69,19 +78,8 @@ public class MessageHistoryPage extends BasePageDecorator {
 		HeaderPage header = (HeaderPage) decorator;
 		header.setTitle("Messaging");
 		
-		
-		List<JSONObject> list = new ArrayList<JSONObject>();
-		for(int i = 0; i < 20; i++)
-		{
-			JSONObject item = new JSONObject();
-			try {
-				item.put(Const.ID, i);
-				item.put(Const.USERNAME, "01548768268");
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			list.add(item);
-		}
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		List<JSONObject> list = DBManager.getChatHistory(getContext(), sipNumber, "");
 		
 		m_bEditMode = false;
 		
@@ -138,9 +136,21 @@ public class MessageHistoryPage extends BasePageDecorator {
 			{
 				list.remove(i);
 				m_adapterMessageList.notifyDataSetChanged();
+				
+				String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+				DBManager.deleteChatHistory(getContext(), sipNumber, item.optString(Const.TO, ""));
 				break;
 			}
 		}
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		List<JSONObject> list = DBManager.getChatHistory(getContext(), sipNumber, "");
+		m_adapterMessageList.setData(list);
 	}
 	
 	
@@ -166,6 +176,27 @@ public class MessageHistoryPage extends BasePageDecorator {
 			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeWidth(50));
 			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_sent_flag), 72, 40, true);
 			((TextView)ViewHolder.get(rowView, R.id.txt_content)).setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeWidth(40));
+			
+			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(item.optString(Const.REALNAME, ""));
+			((TextView)ViewHolder.get(rowView, R.id.txt_content)).setText(item.optString(Const.BODY, ""));
+			
+			int sendstate = item.optInt(Const.SENT, 0);
+			ImageView result_icon = (ImageView)ViewHolder.get(rowView, R.id.img_sent_flag);
+			switch(sendstate)
+			{
+			case 0:	// not sent
+				result_icon.setImageResource(R.drawable.fail_icon);
+				break;
+			case 1: // send ok
+				result_icon.setImageResource(R.drawable.msg_state3);
+				break;
+			case 2:	// delivered
+				result_icon.setImageResource(R.drawable.msg_state2);
+				break;
+			case 3:	// sending
+				result_icon.setImageResource(Color.TRANSPARENT);
+				break;
+			}
 			
 			if( m_bEditMode == true )
 				ViewHolder.get(rowView, R.id.lay_edit_message).setVisibility(View.VISIBLE);

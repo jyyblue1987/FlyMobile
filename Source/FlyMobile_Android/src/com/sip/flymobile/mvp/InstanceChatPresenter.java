@@ -6,9 +6,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.doubango.imsdroid.Engine;
-import org.doubango.ngn.media.NgnMediaType;
-import org.doubango.ngn.model.NgnHistorySMSEvent;
 import org.doubango.ngn.model.NgnHistoryEvent.StatusType;
+import org.doubango.ngn.model.NgnHistorySMSEvent;
 import org.doubango.ngn.services.INgnConfigurationService;
 import org.doubango.ngn.services.INgnHistoryService;
 import org.doubango.ngn.services.INgnSipService;
@@ -21,10 +20,6 @@ import org.json.JSONObject;
 import com.sip.flymobile.Const;
 import com.sip.flymobile.data.DBManager;
 
-import android.content.Context;
-import android.os.Message;
-import android.renderscript.Type;
-import android.util.Log;
 import common.library.utils.BackgroundTaskUtils;
 import common.library.utils.BackgroundTaskUtils.OnTaskProgress;
 import common.library.utils.CheckUtils;
@@ -36,7 +31,6 @@ public class InstanceChatPresenter extends ChatPresenter {
 	private INgnSipService mSipService;
 	INgnConfigurationService mConfigurationService;
 	
-//	Chat m_Chat = null;
 	public InstanceChatPresenter(ChatView view) {
 		super(view);
 	
@@ -72,8 +66,9 @@ public class InstanceChatPresenter extends ChatPresenter {
 		
 	public void getChatHistory(int id)
 	{
-		String from = "";
-		String to = "";
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		String from = sipNumber;
+		String to = m_ToUsername;
 		
 		List<JSONObject> list = DBManager.getIndividualChatHistory(((BaseView)view).getContext(), from, to, 0, id, m_nPageNum);
 		view.showChatHistory(list);
@@ -293,7 +288,7 @@ public class InstanceChatPresenter extends ChatPresenter {
 	
 	public String getDisplayName()
 	{
-		return "";
+		return m_ChatUserInfo.optString(Const.REALNAME, "");
 	}
 
 }

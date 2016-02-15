@@ -1,5 +1,6 @@
 package com.sip.flymobile.pages.fragments;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.doubango.imsdroid.Engine;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -40,6 +42,7 @@ import common.design.layout.ScreenAdapter;
 import common.design.utils.ResourceUtils;
 import common.library.utils.CheckUtils;
 import common.library.utils.MessageUtils;
+import common.library.utils.MessageUtils.OnButtonClickListener;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.MyListAdapter;
 import common.list.adapter.ViewHolder;
@@ -119,9 +122,8 @@ public class ContactListPage extends BasePageDecorator {
 		
 		changeNavigateButton();		
 		showHeaderBar();
-
-		List<JSONObject> list = DBManager.getContactList(getContext(), "");
-		m_adapterContactList = new ContactListAdapter(getContext(), list, R.layout.fragment_contact_list_item, null);
+		
+		m_adapterContactList = new ContactListAdapter(getContext(), new ArrayList<JSONObject>(), R.layout.fragment_contact_list_item, null);
 		
 		m_listItems.setAdapter(m_adapterContactList);
 	}
@@ -172,7 +174,17 @@ public class ContactListPage extends BasePageDecorator {
 					View arg1, int position, long arg3) {
 //				gotoAddContactPage(position);
 			}			
-		});		
+		});	
+		
+		m_listItems.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+	        public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+	                int arg2, long arg3) {
+	            
+				onRequestDeleteContact(arg2);
+	            return true;
+	        }
+		});
 		
 		m_editSearchText.addTextChangedListener(new TextWatcher() {
 			
@@ -196,6 +208,30 @@ public class ContactListPage extends BasePageDecorator {
 		
 	}
 	
+	private void onRequestDeleteContact(final int pos)
+	{
+		MessageUtils.showDialogYesNo(getContext().getParent(), "Do you want to delete this contact?", new OnButtonClickListener() {
+			
+			@Override
+			public void onOkClick() {
+				deleteContact(pos);
+			}
+			
+			@Override
+			public void onCancelClick() {
+				
+			}
+		});
+	}
+	
+	private void deleteContact(int pos)
+	{
+		JSONObject data = m_adapterContactList.getData().get(pos);
+		int id = data.optInt(Const.ID, 0);
+		DBManager.deleteContact(id + "");
+		m_adapterContactList.getData().remove(pos);
+		m_adapterContactList.notifyDataSetChanged();
+	}
 	private void showSearchBar()
 	{
 		getContext().findViewById(R.id.fragment_header).setVisibility(View.GONE);
@@ -240,6 +276,14 @@ public class ContactListPage extends BasePageDecorator {
 		
 		bundle.putString(INTENT_EXTRA, item.toString());
 		ActivityManager.changeActivity(getContext().getParent(), ChatViewActivity.class, bundle, false, null );
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		List<JSONObject> list = DBManager.getContactList(getContext(), "");
+		m_adapterContactList.setData(list);
 	}
 	
 	class ContactListAdapter extends MyListAdapter implements SectionIndexer{
@@ -295,7 +339,7 @@ public class ContactListPage extends BasePageDecorator {
 			else
 			{
 				JSONObject prev_item = getItem(position - 1);
-				String preLabel = prev_item.optString("pname", "");
+				String preLabel = prev_item.optString(Const.REALNAME, "");
 				if( CheckUtils.isEmpty(preLabel) )
 					preLabel = "Alias";
 				char preFirstChar = preLabel.toUpperCase().charAt(0);
@@ -316,7 +360,7 @@ public class ContactListPage extends BasePageDecorator {
 			else
 			{
 				JSONObject next_item = getItem(position + 1);
-				String nextLabel = next_item.optString("pname", "");
+				String nextLabel = next_item.optString(Const.REALNAME, "");
 				
 				char nextFirstChar = '0';
 				if( CheckUtils.isEmpty(nextLabel) == false )
@@ -368,7 +412,7 @@ public class ContactListPage extends BasePageDecorator {
 
 			for (int i = 0; i < getCount(); i++) {
 				JSONObject item = getItem(i);
-				String l = item.optString("pname", "");
+				String l = item.optString(Const.REALNAME, "");
 				char firstChar = l.toUpperCase().charAt(0);
 				if (firstChar == section) {
 					return i;

@@ -101,12 +101,13 @@ public class CallHistoryPage extends BasePageDecorator {
 			
 			String date = DateTimeUtils.getFriendlyDateString(new Date(event.getStartTime()));
 			String remoteParty = NgnUriUtils.getDisplayName(event.getRemoteParty());
-			String phoneNumber = NgnUriUtils.getValidPhoneNumber(remoteParty);
+			String phoneNumber = NgnUriUtils.getValidPhoneNumber(event.getRemoteParty());
 			
 			JSONObject data = new JSONObject();
 			
 			try {
-				data.put(Const.TO, remoteParty);
+				data.put(Const.ID, i);
+				data.put(Const.REALNAME, remoteParty);
 				data.put(Const.USERNAME, phoneNumber);
 				data.put(Const.DATE, date);
 				data.put(Const.STATE, event.getStatus());
@@ -164,9 +165,11 @@ public class CallHistoryPage extends BasePageDecorator {
 		for(int i = 0; i < list.size(); i++)
 		{
 			JSONObject item = list.get(i);
+			
 			if( item.optInt(Const.ID, -1) == data.optInt(Const.ID, -1) )
 			{
 				list.remove(i);
+				 mHistorytService.getObservableEvents().remove((NgnHistoryEvent)item.opt(Const.TAG));
 				m_adapterCallList.notifyDataSetChanged();
 				break;
 			}
@@ -211,7 +214,7 @@ public class CallHistoryPage extends BasePageDecorator {
 			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.img_call_icon), 60, 0, 60, 0, true);
 			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_icon), 60, 60, true);
 			
-			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(item.optString(Const.TO, ""));
+			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(item.optString(Const.REALNAME, ""));
 			((TextView)ViewHolder.get(rowView, R.id.txt_call_time)).setText(item.optString(Const.DATE, ""));
 			
 			if( m_bEditMode == true )
