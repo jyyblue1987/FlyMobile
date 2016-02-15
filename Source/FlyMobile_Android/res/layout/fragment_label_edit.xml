@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/lay_fragment"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:gravity="center_vertical"
+	android:orientation="vertical"
+	android:padding="10dip"
+	>
+	<LinearLayout
+	    android:id="@+id/lay_info"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" 
+		android:weightSum="1.0"
+		android:orientation="horizontal"
+	    >
+	    <common.component.ui.MyTextView
+		    android:id="@+id/txt_label"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.3"
+		    android:text="mobile" 
+		    />
+		<EditText
+		    android:id="@+id/edit_content"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="0.7"
+		    android:text="01548768269" 
+		    android:background="@color/transparent"
+		    />	    
+	</LinearLayout>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="2dip"
+	    android:background="@color/app_color" 
+	    >
+	    
+	</LinearLayout>
+</LinearLayout>

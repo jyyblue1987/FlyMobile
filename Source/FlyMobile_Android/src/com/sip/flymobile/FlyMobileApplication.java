@@ -1,6 +1,7 @@
 package com.sip.flymobile;
 
 import org.doubango.ngn.NgnApplication;
+import org.doubango.tinyWRAP.SipCallback;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -9,6 +10,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.sip.flymobile.data.DBManager;
+import com.sip.flymobile.sip.SipController;
 import com.umeng.analytics.MobclickAgent;
 
 import android.content.Context;
@@ -43,6 +45,7 @@ public class FlyMobileApplication extends NgnApplication {
 		   NetworkUtils.setContext(this);
 		   MessageUtils.setApplicationContext(this);		
 		   DBManager.loadDB(this);
+		   SipController.initSipAccount();
 	   }
 	   
 	   private void initImageLoader(Context context) {

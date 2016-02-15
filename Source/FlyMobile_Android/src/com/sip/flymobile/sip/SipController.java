@@ -8,6 +8,7 @@ import org.doubango.ngn.sip.NgnSipSession.ConnectionState;
 import org.doubango.ngn.utils.NgnConfigurationEntry;
 
 import android.content.Context;
+import android.os.Handler;
 
 
 public class SipController {
@@ -29,15 +30,25 @@ public class SipController {
 		mConfigurationService.putString(NgnConfigurationEntry.NETWORK_PCSCF_HOST, SIP_SERVER_HOST);
 		mConfigurationService.putInt(NgnConfigurationEntry.NETWORK_PCSCF_PORT, SIP_SERVER_PORT);
 		mConfigurationService.putString(NgnConfigurationEntry.NETWORK_REALM, SIP_DOMAIN);
+		mConfigurationService.putBoolean(NgnConfigurationEntry.NETWORK_USE_3G, true);
 		// VERY IMPORTANT: Commit changes
 		mConfigurationService.commit();
 		// register (log in)
 	}
 	
+	public static boolean isConnectedAccount()
+	{
+		NgnEngine mEngine = Engine.getInstance();
+		INgnSipService mSipService = mEngine.getSipService();
+		
+		if(mEngine.isStarted() && mSipService.isRegistered() == false )
+			return false;
+		
+		return true;
+	}
 	public static void register(Context context)
 	{
 		NgnEngine mEngine = Engine.getInstance();
-		INgnConfigurationService mConfigurationService = mEngine.getConfigurationService();
 		INgnSipService mSipService = mEngine.getSipService();
 		
 		// Starts the engine
@@ -52,23 +63,26 @@ public class SipController {
 		// Register
 		if(mEngine.isStarted()){
 			if(!mSipService.isRegistered()){
-				// Set credentials
-				mConfigurationService.putString(NgnConfigurationEntry.IDENTITY_IMPI, SIP_USERNAME);
-				mConfigurationService.putString(NgnConfigurationEntry.IDENTITY_IMPU, String.format("sip:%s@%s", SIP_USERNAME, SIP_DOMAIN));
-				mConfigurationService.putString(NgnConfigurationEntry.IDENTITY_PASSWORD, SIP_PASSWORD);
-				mConfigurationService.putString(NgnConfigurationEntry.NETWORK_PCSCF_HOST, SIP_SERVER_HOST);
-				mConfigurationService.putInt(NgnConfigurationEntry.NETWORK_PCSCF_PORT, SIP_SERVER_PORT);
-				mConfigurationService.putString(NgnConfigurationEntry.NETWORK_REALM, SIP_DOMAIN);
-				mConfigurationService.putBoolean(NgnConfigurationEntry.NETWORK_USE_3G, true);
-
-				// VERY IMPORTANT: Commit changes
-				mConfigurationService.commit();
 				// register (log in)
 				mSipService.register(context);
 			}
 		}
 	}
 	
+	public static void changeAccount(final Context context)
+	{
+		unregister();
+		
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				register(context);
+			}
+		}, 2000);
+		
+	}
 	public static void unregister()
 	{
 		INgnSipService mSipService = Engine.getInstance().getSipService();

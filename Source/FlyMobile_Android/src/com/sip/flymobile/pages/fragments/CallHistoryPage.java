@@ -159,17 +159,7 @@ public class CallHistoryPage extends BasePageDecorator {
 		});
 
 	}
-	
-	private void gotoChatViewPage(int pos)
-	{
-//		JSONObject data = m_adapterCallList.getData().get(pos);
-//		
-//		Bundle bundle = new Bundle();				
-//	
-//		bundle.putString(INTENT_EXTRA, data.toString());
-//		ActivityManager.changeActivity(getContext().getParent(), ChatViewActivity.class, bundle, false, null );
-	}
-	
+
 	private void deleteCallHistory(JSONObject data)
 	{
 		List<JSONObject> list = m_adapterCallList.getData();

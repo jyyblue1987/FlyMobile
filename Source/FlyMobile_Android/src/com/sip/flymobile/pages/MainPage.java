@@ -1,5 +1,9 @@
 package com.sip.flymobile.pages;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.ngn.NgnEngine;
+import org.doubango.ngn.services.INgnSipService;
+
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
@@ -8,6 +12,7 @@ import com.sip.flymobile.pages.fragments.ContactListActivity;
 import com.sip.flymobile.pages.fragments.DialActivity;
 import com.sip.flymobile.pages.fragments.MessageHistoryActivity;
 import com.sip.flymobile.pages.fragments.SettingActivity;
+import com.sip.flymobile.sip.SipController;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -71,6 +76,9 @@ public class MainPage extends BasePageDecorator {
 			
 			tabHost.addTab(tabSpecDial);
 		}
+		
+		if( SipController.isConnectedAccount() == false )
+			g_nTabNum = 4;
 		
 		//set Windows tab as default (zero based)
 		tabHost.setCurrentTab(g_nTabNum);

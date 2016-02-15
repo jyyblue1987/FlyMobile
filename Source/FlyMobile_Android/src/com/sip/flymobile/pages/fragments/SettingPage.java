@@ -10,9 +10,13 @@ import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.pages.AccountSettingActivity;
+import com.sip.flymobile.pages.ChatViewActivity;
 import com.sip.flymobile.pages.HeaderPage;
+import com.sip.flymobile.sip.SipController;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +28,7 @@ import common.design.layout.ScreenAdapter;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.MyListAdapter;
 import common.list.adapter.ViewHolder;
+import common.manager.activity.ActivityManager;
 
 
 public class SettingPage extends BasePageDecorator {
@@ -72,6 +77,38 @@ public class SettingPage extends BasePageDecorator {
 		m_adapterSettingList = new SettingListAdapter(getContext(), list, R.layout.fragment_list_setting_item, null);
 		
 		m_listItems.setAdapter(m_adapterSettingList);
+		
+//		if( SipController.isConnectedAccount() == false )
+//		{
+//			gotoOtherPage(0);
+//		}
+	}
+	
+	public void initEvents()
+	{
+		super.initEvents();
+
+		m_listItems.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {		
+				gotoOtherPage(arg2);
+			}
+		});
+	}
+	
+	private void gotoOtherPage(int pos)
+	{
+		Bundle bundle = new Bundle();				
+
+		switch(pos)
+		{
+		case 0:	// Account Settings
+//			ActivityManager.getInstance().popAllActivity();
+			ActivityManager.changeActivity(getContext().getParent(), AccountSettingActivity.class, bundle, false, null );
+			break;
+		}
+		
 	}
 	
 	class SettingListAdapter extends MyListAdapter {

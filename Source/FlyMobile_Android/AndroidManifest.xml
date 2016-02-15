@@ -70,6 +70,7 @@
         <activity android:name=".pages.fragments.CallHistoryActivity" android:screenOrientation="portrait"      
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".pages.fragments.SettingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".pages.AccountSettingActivity" android:screenOrientation="portrait"/>
         
         <service android:name="org.doubango.imsdroid.NativeService"></service>
         
