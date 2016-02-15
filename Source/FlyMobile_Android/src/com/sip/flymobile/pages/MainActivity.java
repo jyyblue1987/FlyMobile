@@ -35,6 +35,11 @@ public class MainActivity extends BaseTabScreen {
 		m_view.initEvents();
 	}
 	
+	public void selectTab(int num)
+	{
+		((MainPage)m_view).selectTab(num);
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();

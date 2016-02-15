@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sip.flymobile.Const;
+import com.sip.flymobile.FlyMobileUtils;
 import com.sip.flymobile.data.DBManager;
 
 import common.library.utils.BackgroundTaskUtils;
@@ -288,7 +289,7 @@ public class InstanceChatPresenter extends ChatPresenter {
 	
 	public String getDisplayName()
 	{
-		return m_ChatUserInfo.optString(Const.REALNAME, "");
+		return FlyMobileUtils.getDisplayName(m_ChatUserInfo);
 	}
 
 }

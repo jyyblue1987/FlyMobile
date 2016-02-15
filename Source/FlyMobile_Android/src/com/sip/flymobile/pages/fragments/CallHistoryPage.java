@@ -5,24 +5,33 @@ import java.util.Date;
 import java.util.List;
 
 import org.doubango.imsdroid.Engine;
+import org.doubango.imsdroid.Screens.ScreenAV;
 import org.doubango.imsdroid.Utils.DateTimeUtils;
 import org.doubango.ngn.media.NgnMediaType;
 import org.doubango.ngn.model.NgnHistoryAVCallEvent.HistoryEventAVFilter;
 import org.doubango.ngn.model.NgnHistoryEvent;
 import org.doubango.ngn.services.INgnHistoryService;
+import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.utils.NgnStringUtils;
 import org.doubango.ngn.utils.NgnUriUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
+import com.sip.flymobile.data.DBManager;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
+import com.sip.flymobile.pages.ChatViewActivity;
 import com.sip.flymobile.pages.HeaderPage;
+import com.sip.flymobile.pages.MainActivity;
 
 import android.app.AlertDialog;
+import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,9 +42,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
+import common.library.utils.AlgorithmUtils;
+import common.library.utils.MessageUtils;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.MyListAdapter;
 import common.list.adapter.ViewHolder;
+import common.manager.activity.ActivityManager;
 
 
 public class CallHistoryPage extends BasePageDecorator {
@@ -142,7 +154,7 @@ public class CallHistoryPage extends BasePageDecorator {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {		
-				gotoChatViewPage(arg2);
+				gotoCallingPage(arg2);
 			}
 		});
 
@@ -185,6 +197,50 @@ public class CallHistoryPage extends BasePageDecorator {
 		}
 	}
 	
+	private void gotoCallingPage(int pos)
+	{
+		if( pos < 0 )
+			return;
+		
+		JSONObject item = m_adapterCallList.getData().get(pos);
+		gotoCallingPage(item);
+	}
+	
+	private void gotoCallingPage(JSONObject item)
+	{
+		String mobile = item.optString(Const.USERNAME, ""); 
+		INgnSipService mSipService = Engine.getInstance().getSipService();
+		if(mSipService.isRegistered() && !NgnStringUtils.isNullOrEmpty(mobile))
+			ScreenAV.makeCall(mobile, NgnMediaType.Audio);
+		else
+			MessageUtils.showMessageDialog(getContext().getParent(), "Not connect to SIP service");
+	}
+
+	private void gotoDialPage(JSONObject item)
+	{
+		String mobile = item.optString(Const.USERNAME, ""); 
+		MainActivity tab = (MainActivity)getContext().getParent();
+		
+		if( tab == null )
+			return;
+		
+		tab.selectTab(0);
+		
+		Intent intent = new Intent(Const.DIAL_NUMBER_ACTION);
+        intent.putExtra(Const.EXTRA_MESSAGE, mobile);
+        getContext().sendBroadcast(intent);
+	}
+
+	private void gotoSMSPage(JSONObject item)
+	{
+		Bundle bundle = new Bundle();				
+		
+		JSONObject cotnact = DBManager.getContact(getContext(), item.optString(Const.USERNAME, ""), 0);
+		AlgorithmUtils.bindJSONObject(cotnact, item);
+		bundle.putString(INTENT_EXTRA, cotnact.toString());
+		ActivityManager.changeActivity(getContext().getParent(), ChatViewActivity.class, bundle, false, null );
+	}
+	
 	class CallListAdapter extends MyListAdapter {
 		public CallListAdapter(Context context, List<JSONObject> data,
 				int resource, ItemCallBack callback) {
@@ -209,10 +265,10 @@ public class CallHistoryPage extends BasePageDecorator {
 			((TextView)ViewHolder.get(rowView, R.id.txt_call_time)).setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeWidth(40));
 			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.txt_call_time), 10, 0, 0, 0, true);
 			
-			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_sms_icon), 65, 60, true);
+			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_sms_icon), 92, 80, true);
 			
 			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.img_call_icon), 60, 0, 60, 0, true);
-			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_icon), 60, 60, true);
+			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_icon), 80, 80, true);
 			
 			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(item.optString(Const.REALNAME, ""));
 			((TextView)ViewHolder.get(rowView, R.id.txt_call_time)).setText(item.optString(Const.DATE, ""));
@@ -256,6 +312,22 @@ public class CallHistoryPage extends BasePageDecorator {
 					});
 					AlertDialog alert = alert_confirm.create();
 					alert.show();
+				}
+			});
+			
+			ViewHolder.get(rowView, R.id.img_call_icon).setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					gotoDialPage(item);
+				}
+			});
+			
+			ViewHolder.get(rowView, R.id.img_sms_icon).setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					gotoSMSPage(item);
 				}
 			});
 		}	

@@ -4,6 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.imsdroid.Screens.ScreenAV;
+import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.utils.NgnStringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,6 +62,7 @@ import common.image.load.ImageUtils;
 import common.library.utils.ActionUtils;
 import common.library.utils.AndroidUtils;
 import common.library.utils.CheckUtils;
+import common.library.utils.MessageUtils;
 import common.library.utils.MyTime;
 import common.list.adapter.ItemCallBack;
 import common.list.adapter.ItemResult;
@@ -173,8 +179,8 @@ public class ChatViewPage extends BasePageDecorator implements ChatView {
 		LayoutUtils.setSize(m_imgCallIcon, 80, 80, true);
 		LayoutUtils.setMargin(m_imgCallIcon, 60, 0, 60, 0, true);
 		
-		LayoutUtils.setSize(m_EmojiButton, 80, 80, true);
-		LayoutUtils.setSize(m_SubmitButton, 120, 90, true);
+		LayoutUtils.setSize(m_EmojiButton, 110, 110, true);
+		LayoutUtils.setSize(m_SubmitButton, 140, 110, true);
 		
 		m_EmojiconEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(60));
 		m_EmojiconEditText.setEmojiconSize(ScreenAdapter.computeHeight(60));
@@ -281,7 +287,7 @@ public class ChatViewPage extends BasePageDecorator implements ChatView {
 			
 			@Override
 			public void onClick(View v) {
-				
+				presenter.makeVoiceCall();				
 			}
 		});
 		

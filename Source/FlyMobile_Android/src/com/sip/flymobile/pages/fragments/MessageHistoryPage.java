@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sip.flymobile.Const;
+import com.sip.flymobile.FlyMobileUtils;
 import com.sip.flymobile.R;
 import com.sip.flymobile.data.DBManager;
 import com.sip.flymobile.mvp.BasePageDecorator;
@@ -177,7 +178,7 @@ public class MessageHistoryPage extends BasePageDecorator {
 			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_sent_flag), 72, 40, true);
 			((TextView)ViewHolder.get(rowView, R.id.txt_content)).setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeWidth(40));
 			
-			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(item.optString(Const.REALNAME, ""));
+			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(FlyMobileUtils.getDisplayName(item));
 			((TextView)ViewHolder.get(rowView, R.id.txt_content)).setText(item.optString(Const.BODY, ""));
 			
 			int sendstate = item.optInt(Const.SENT, 0);

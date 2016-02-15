@@ -10,6 +10,7 @@ public class Const {
 	public static final String NOTIFICATON_RECEIVE_ACTION = "notification_receive";
 	public static final String UPDATE_MESSAGE_ACTION = "update_message";	
 	public static final String ROSTER_INFO_CHANGE_ACTION = "roster_info_change";
+	public static final String DIAL_NUMBER_ACTION = "dial_number";
 	
 	
 	// Contact table

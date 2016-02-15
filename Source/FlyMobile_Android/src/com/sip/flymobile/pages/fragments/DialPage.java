@@ -8,14 +8,18 @@ import org.doubango.ngn.services.INgnSipService;
 import org.doubango.ngn.utils.NgnConfigurationEntry;
 import org.doubango.ngn.utils.NgnStringUtils;
 
+import com.sip.flymobile.Const;
 import com.sip.flymobile.R;
 import com.sip.flymobile.mvp.BasePageDecorator;
 import com.sip.flymobile.mvp.BaseView;
 import com.sip.flymobile.utils.DialerUtils;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -227,7 +231,17 @@ public class DialPage extends BasePageDecorator {
 				return true;
 			}
 		});
+		
+		getContext().registerReceiver(mHandleDialNumberReceiver, new IntentFilter(Const.DIAL_NUMBER_ACTION));
 	}
+	
+	private BroadcastReceiver mHandleDialNumberReceiver = new BroadcastReceiver() {
+	      @Override
+	      public void onReceive(Context context, Intent intent) {
+	          String mobile = intent.getExtras().getString(Const.EXTRA_MESSAGE);
+	          m_editDialNumber.setText(mobile);				
+	      }
+	};
 	
 	private void showContactNumbers()
 	{
@@ -306,5 +320,11 @@ public class DialPage extends BasePageDecorator {
 			MessageUtils.showMessageDialog(getContext().getParent(), "Not connect to SIP service");
 			
 		return true;
+	}
+	
+	@Override
+	public void onDestroy() {
+		getContext().unregisterReceiver(mHandleDialNumberReceiver);
+		super.onDestroy();
 	}
 }

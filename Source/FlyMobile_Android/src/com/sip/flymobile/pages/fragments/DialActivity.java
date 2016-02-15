@@ -37,4 +37,10 @@ public class DialActivity extends Activity {
 		super.onPause();
 		m_view.onPause();
 	}
+	
+	@Override
+	protected void onDestroy() {
+		m_view.onDestroy();
+		super.onDestroy();		
+	}
 }

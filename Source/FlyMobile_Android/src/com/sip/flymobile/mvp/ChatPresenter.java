@@ -1,8 +1,17 @@
 package com.sip.flymobile.mvp;
 
+import org.doubango.imsdroid.Engine;
+import org.doubango.imsdroid.Screens.ScreenAV;
+import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.utils.NgnStringUtils;
 import org.json.JSONObject;
 
 import com.sip.flymobile.Const;
+import com.sip.flymobile.FlyMobileUtils;
+
+import common.library.utils.CheckUtils;
+import common.library.utils.MessageUtils;
 
 public class ChatPresenter implements BasePresenter {
 	int m_nPageNum = 30;
@@ -93,6 +102,25 @@ public class ChatPresenter implements BasePresenter {
 	public String getDisplayName()
 	{
 		return "";
+	}
+	
+	public void makeVoiceCall()
+	{
+		String phoneNumber = FlyMobileUtils.getMobieNumber(m_ChatUserInfo);
+		if( CheckUtils.isEmpty(phoneNumber) )
+		{
+			MessageUtils.showMessageDialog(((BaseView)view).getContext().getParent(), "Invalid Number");
+			return;
+		}
+		
+		INgnSipService mSipService = Engine.getInstance().getSipService();
+		if(mSipService.isRegistered() && !NgnStringUtils.isNullOrEmpty(phoneNumber)){
+			((BaseView)view).finishView();
+			ScreenAV.makeCall(phoneNumber, NgnMediaType.Audio);
+		}
+		else
+			MessageUtils.showMessageDialog(((BaseView)view).getContext().getParent(), "Not connect to SIP service");
+				
 	}
 	
 }

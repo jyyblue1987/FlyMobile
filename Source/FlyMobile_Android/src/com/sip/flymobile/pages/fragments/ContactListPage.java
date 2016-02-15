@@ -309,10 +309,10 @@ public class ContactListPage extends BasePageDecorator {
 			((TextView)ViewHolder.get(rowView, R.id.txt_mobile)).setTextSize(TypedValue.COMPLEX_UNIT_PX, ScreenAdapter.computeHeight(35));
 			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.txt_mobile), 0, 0, 0, 0, true);
 			
-			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_sms_icon), 65, 60, true);
+			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_sms_icon), 92, 80, true);
 			
 			LayoutUtils.setMargin(ViewHolder.get(rowView, R.id.img_call_icon), 60, 0, 60, 0, true);
-			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_icon), 60, 60, true);
+			LayoutUtils.setSize(ViewHolder.get(rowView, R.id.img_call_icon), 80, 80, true);
 
 			String pName = item.optString(Const.REALNAME, "Alias");
 			((TextView)ViewHolder.get(rowView, R.id.txt_name)).setText(pName);

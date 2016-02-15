@@ -75,10 +75,12 @@ public class MainPage extends BasePageDecorator {
 		//set Windows tab as default (zero based)
 		tabHost.setCurrentTab(g_nTabNum);
 	}
-	public void layoutControls()
+	
+	public void selectTab(int num)
 	{
-		super.layoutControls();
-			
+		TabHost tabHost = view.getTabHost();
+		tabHost.setCurrentTab(num);
+		g_nTabNum = num;
 	}
 	
 	public void initEvents()
