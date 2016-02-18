@@ -9,6 +9,7 @@ import org.doubango.ngn.utils.NgnConfigurationEntry;
 
 import android.content.Context;
 import android.os.Handler;
+import common.library.utils.CheckUtils;
 
 
 public class SipController {
@@ -36,6 +37,18 @@ public class SipController {
 		// register (log in)
 	}
 	
+	public static boolean isValidAccount()
+	{
+		INgnConfigurationService mConfigurationService = Engine.getInstance().getConfigurationService();
+		
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, "");
+		String password = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, "");
+		
+		if( CheckUtils.isEmpty(sipNumber) || CheckUtils.isEmpty(password) )
+			return false;
+		
+		return true;
+	}
 	public static boolean isConnectedAccount()
 	{
 		NgnEngine mEngine = Engine.getInstance();

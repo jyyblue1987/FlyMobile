@@ -243,7 +243,7 @@ public class DialPage extends BasePageDecorator {
 	
 	private void showContactNumbers()
 	{
-		AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+		AlertDialog.Builder dialog = new AlertDialog.Builder(getContext().getParent());
 
 		String items[] = {"019 000 0000", "015 510 5155"};
 		dialog.setSingleChoiceItems(items, m_nSelContactNum, new DialogInterface.OnClickListener() {			
@@ -325,7 +325,7 @@ public class DialPage extends BasePageDecorator {
 		super.onResume();
 		
 		INgnConfigurationService mConfigurationService = Engine.getInstance().getConfigurationService();
-		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, "");
 		m_txtMobile.setText(sipNumber);
 	}
 	

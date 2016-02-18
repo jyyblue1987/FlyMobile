@@ -24,8 +24,10 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.Toast;
 import common.design.layout.LayoutUtils;
 import common.design.layout.ScreenAdapter;
+import common.library.utils.MessageUtils;
 
 
 public class MainPage extends BasePageDecorator {
@@ -77,11 +79,11 @@ public class MainPage extends BasePageDecorator {
 			tabHost.addTab(tabSpecDial);
 		}
 		
-		if( SipController.isConnectedAccount() == false )
-			g_nTabNum = 4;
-		
 		//set Windows tab as default (zero based)
 		tabHost.setCurrentTab(g_nTabNum);
+		
+		if( SipController.isValidAccount() == false )
+			Toast.makeText(getContext(), "Please set your account", Toast.LENGTH_SHORT).show();
 	}
 	
 	public void selectTab(int num)

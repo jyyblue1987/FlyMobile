@@ -94,6 +94,8 @@ public class AccountSettingPage extends BasePageDecorator {
 		m_editNumber.setInputType(InputType.TYPE_CLASS_PHONE);
 		m_editPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		String sipNumber = mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI);
+		if( sipNumber.equals(NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI) )
+			sipNumber = "";
 		
 		m_editNumber.setText(sipNumber);
 		changeEditProperty();
@@ -108,9 +110,9 @@ public class AccountSettingPage extends BasePageDecorator {
 	
 	private void showAccountInfo()
 	{
-		m_editNumber.setText(mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI));
-        m_editName.setText(mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_DISPLAY_NAME, NgnConfigurationEntry.DEFAULT_IDENTITY_DISPLAY_NAME));
-        m_editPassword.setText(mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_PASSWORD, NgnStringUtils.emptyValue()));		
+		m_editNumber.setText(mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_IMPI, ""));
+        m_editName.setText(mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_DISPLAY_NAME, ""));
+        m_editPassword.setText(mConfigurationService.getString(NgnConfigurationEntry.IDENTITY_PASSWORD, ""));		
 	}
 	
 	private boolean saveAccountInfo()
@@ -124,6 +126,9 @@ public class AccountSettingPage extends BasePageDecorator {
 			MessageUtils.showMessageDialog(getContext(), "Please input account information");
 			return false;
 		}
+		
+		if( CheckUtils.isEmpty(number) )
+			number = NgnConfigurationEntry.DEFAULT_IDENTITY_IMPI;
 		
         mConfigurationService.putString(NgnConfigurationEntry.IDENTITY_IMPU, String.format("sip:%s@%s", number, SipController.SIP_DOMAIN));        
     	mConfigurationService.putString(NgnConfigurationEntry.IDENTITY_DISPLAY_NAME, name);

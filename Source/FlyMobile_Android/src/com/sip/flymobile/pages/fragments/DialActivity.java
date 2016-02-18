@@ -16,8 +16,6 @@ public class DialActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_dial_page);
 		
-//		SipController.register(this);
-		
 		m_view = new DialPage(new HeaderPage(new BasePage()));
 		
 		m_view.setContext(this, false);
